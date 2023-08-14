@@ -1,0 +1,90 @@
+.heading-section {padding: 10px 0; margin-bottom: 1rem; position: relative; }
+h4.heading-title {font-size: 16px;font-weight: 600;margin: 0;padding: 0;}
+.btn-option-info{margin-left: auto;}
+a.btn-gr {background: #92b116; padding: 8px 20px; display: inline-block; font-size: 12px; color: #fff; border-radius: 50px; text-transform: uppercase; font-weight: bold; }
+a.btn-ye {background: #f39323; padding: 8px 20px; display: inline-block; font-size: 12px; color: #fff; border-radius: 50px; text-transform: uppercase; font-weight: bold; }
+a.Back-btn {font-size: 16px; color: #00ee57; }
+
+.cactuscrates-header {display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem }
+.cactuscrates-filter{margin-bottom: 0;text-align: right;/* background: #fff; *//* padding: 10px; */}
+.cactuscrates-filter input.form-control {background: #fff;border-radius: 5px;font-size: 13px;border: 1px solid #fff;font-weight: 400;height: auto;padding: 9px 15px;/* box-shadow: 0 5px 13px rgb(240 240 241 / 46%); */outline: 0;width: 100%;display: inline-block;color: #455A64;}
+.cactuscrates-filter select.form-control {background: #fff;border-radius: 5px;font-size: 14px;border: 1px solid #ffffff;font-weight: 400;height: auto;padding: 9px 10px;/* box-shadow: 0 5px 13px rgb(240 240 241 / 46%); */outline: 0;width: 100%;color: #455A64;appearance: revert;}
+.cactuscrates-filter textarea.form-control {background: #fff; border-radius: 5px; font-size: 14px; border: 1px solid #fff; font-weight: 400; height: auto; padding: 0.8rem 0.94rem; box-shadow: 0 5px 13px rgb(240 240 241 / 46%); outline: 0; width: 100%; display: inline-block; color: #455A64; }
+.cactuscrates-filter .form-control:focus {border: 1px solid #00ee57; box-shadow: none;}
+.search-form-group{position: relative;}
+.search-form-group input.form-control {position: relative;color:#fff;border-radius: 5px;font-weight: 400;font-size: 13px;box-sizing: border-box;padding: 9px 15px 9px 40px;border: 1px solid #ffffff;width: 100%; box-shadow: 0px 0px 17px 3px rgb(0 0 0 / 10%);}
+.search-form-group span.search-icon {position: absolute;top: 50%;left: 15px;pointer-events: none;transform: translateY(-50%) scaleX(-1);color: #ffcc00;font-size: 18px;}
+a.createcrate-btn {text-align: center;border-radius: 5px;padding: 10px 20px;color: #fff;font-size: 14px;font-weight: 500;background: #00ee57;box-shadow: 0px 8px 13px hsl(142deg 100% 47% / 7%);display: inline-block;width: 100%;}
+a.deletedcrates-btn{text-align: center;border-radius: 5px;padding: 10px 20px;color: #fff;font-size: 14px;font-weight: 500;background: #ff0a32;box-shadow: 0px 8px 13px hsl(350deg 100% 52% / 7%);display: inline-block;width: 100%;}
+
+a.deletedcrates-btn:hover{color: #fff;}
+a.createcrate-btn:hover{color: #fff;}
+
+.createcrate-list h2 {font-size: 18px; font-weight: 600; margin: 0 0 1rem 0; padding: 0; } 
+.cactuscrates-card{background: #FFFFFF;box-shadow: 0px 0px 17px 3px rgb(0 0 0 / 10%);border-radius: 10px;/* padding: 10px; */position: relative;margin-bottom: 1rem;/* display: flex; *//* align-items: center; */}
+.cactuscrates-media{background: #FFFFFF;box-shadow: 0px 1px 13px rgb(213 243 224 / 36%);width: 100%;height: 200px;border-radius: 5px;position: relative;overflow: hidden;margin-right: 10px;}
+.cactuscrates-media img {width: 100%;height: 100%;object-fit: cover;}
+.cactuscrates-content {padding: 1rem;position: relative;display: flex;} 
+.cactuscrates-content-inner {flex: 1; } 
+.cactuscrates-content h4 {font-weight: 500;font-size: 14px;line-height: 14px;color: #8C9AA1;padding: 0;margin: 0 0 10px 0;}
+.cactuscrates-price {font-weight: 500;font-size: 20px;line-height: 14px;color: #455A64;margin: 0 0 10px 0;}
+.cactuscrates-action {position: relative;}
+.cactuscrates-action a{background: #00EE57;box-shadow: 0px 13px 20px rgb(0 238 87 / 20%);border-radius: 5px;padding: 6px 20px;font-weight: 500;font-size: 13px;line-height: 20px;text-align: center;letter-spacing: 0.1px;color: #FFFFFF;display: inline-block; text-decoration: none; margin: 0px 2px;}
+.cactuscrates-stock{position: relative;height: 40px;width: 40px;}
+.cactuscrates-stock:before {position: absolute;right: 0;top: 0;content: '';left: 0;bottom: 0;margin: auto;} 
+/* .crates-stock-up:before{background-image:url(./images/admin/up-stock.svg);background-repeat: no-repeat;background-position: center;} */
+/* .crates-stock-down:before{background-image:url(./images/admin/down-stock.svg);background-repeat: no-repeat;background-position: center;} */
+.cactuscrates-action a:hover{color: #fff;}
+.createcrate-list-item {background: #FFFFFF; box-shadow: 0px 8px 13px rgb(0 137 207 / 10%); border-radius: 20px; padding: 1rem; position: relative; margin-bottom: 1rem; display: flex; align-items: center; }
+.createcrate-list-item-icon {width: 65px; height: 65px; text-align: center; margin: auto; margin-right: 10px; position: relative; } 
+.createcrate-list-item-text {flex: 1; }
+.createcrate-list-item-text h3{position: relative;padding: 0;font-weight: 600;font-size: 15px;line-height: 16px;color: #455A64;margin: 0 0 10px 0;}
+.createcrate-price{position: relative;font-weight: 600;font-size: 20px;line-height: 16px;color: #455A64;}
+.createcrate-list-item-action a.edit-btn {text-align: center; border-radius: 5px; color: #fff; font-size: 20px; background: #00ee57; box-shadow: 0px 8px 13px hsl(142deg 100% 47% / 7%); display: inline-block; width: 40px; height: 40px; line-height: 40px; }
+.createcrate-list-item-action a.edit-btn i{position: absolute; top: 34%; right: 4%;}
+
+
+.createcrate-profile-item {background: #FFFFFF;box-shadow: 0px 8px 13px rgb(0 137 207 / 10%);border-radius: 20px;padding: 1rem;position: relative;margin-bottom: 1rem;display: flex;align-items: center;}
+.createcrate-profile-icon {width: 50px; height: 50px; background: #F6FFFA; display: inline-block; border-radius: 50%; text-align: center; line-height: 50px; margin-bottom: 10px; }
+.createcrate-profile-text h3{font-weight: 400;font-size: 13px;line-height: 15px;color: #8C9AA1;margin: 0 0 10px 0;padding: 0;}
+.createcrate-profile-text h2{font-weight: 600;font-size: 16px;line-height: 19px;color: #455A64;padding: 0;margin: 0;}
+
+.createcrate-profile-card {background: #03002b;box-shadow: 0px 8px 13px rgb(0 137 207 / 10%);border-radius: 20px;padding: 1rem;position: relative;margin-bottom: 1rem;display: flex;align-items: center;overflow: hidden;}
+/* .createcrate-profile-card:before {background: url(./images/admin/nasdaq-composite.jpeg);left: 0;right: 0;top: 0;bottom: 0;content: '';position: absolute;filter: blur(5px);opacity: 0.5;} */
+.createcrate-profile-media {width: 100px; height: 100px; background: #FFFFFF; border: 5px solid #00EE57; border-radius: 50%; position: relative; overflow: hidden; margin-right: 15px; }
+.createcrate-profile-card-text{position: relative;}
+.createcrate-profile-addre{font-weight: 400;font-size: 13px;line-height: 15px;color: #fff;margin: 0 0 10px 0;padding: 0;}
+.createcrate-profile-card-text h2{font-weight: 600;font-size: 20px;line-height: 20px;color: #fff;padding: 0;margin: 0 0 10px 0;}
+
+
+.cactuscrates-create-form{    background: #FFFFFF; box-shadow: 0px 0px 17px 3px rgb(0 0 0 / 10%); border-radius: 20px; position: relative; margin-bottom: 1rem; padding: 1rem;}    
+.cactuscrates-create-form .form-group{margin-bottom: 1rem;}
+.cactuscrates-create-form .form-group label{font-weight: 400;font-size: 15px;line-height: 19px;}
+.cactuscrates-create-form input.form-control {background: #fff;border-radius: 5px;font-size: 13px;border: 1px solid #e0e0f6;font-weight: 400;height: auto;padding: 11px 15px;box-shadow: 0 5px 13px rgb(240 240 241 / 46%);outline: 0;width: 100%;display: inline-block;color: #455A64;}
+.cactuscrates-create-form select.form-control {background: #fff;border-radius: 5px;font-size: 14px;border: 1px solid #e0e0f6;font-weight: 400;height: auto;padding: 11px 10px;box-shadow: 0 5px 13px rgb(240 240 241 / 46%);outline: 0;width: 100%;color: #455A64;appearance: revert;}
+.cactuscrates-create-form textarea.form-control {background: #fff; border-radius: 5px; font-size: 14px; border: 1px solid #fff; font-weight: 400; height: auto; padding: 0.8rem 0.94rem; box-shadow: 0 5px 13px rgb(240 240 241 / 46%); outline: 0; width: 100%; display: inline-block; color: #455A64; }
+.cactuscrates-create-form .form-control:focus {border: 1px solid #00ee57; box-shadow: none;}
+
+.cactuscrates-edit-form{background: #FFFFFF; box-shadow: 0px 8px 13px rgb(0 137 207 / 10%); border-radius: 20px; position: relative; margin-bottom: 1rem; padding: 1rem;}    
+.cactuscrates-edit-form .form-group{margin-bottom: 1rem;}
+.cactuscrates-edit-form .form-group label{font-weight: 400;font-size: 15px;line-height: 19px;}
+.cactuscrates-edit-form input.form-control {background: #fff;border-radius: 5px;font-size: 13px;border: 1px solid #00ee57;font-weight: 400;height: auto;padding: 11px 15px 11px 80px;/* box-shadow: 0 5px 13px rgb(240 240 241 / 46%); */outline: 0;width: 100%;display: inline-block;color: #455A64;text-align: left;}
+.cactuscrates-edit-form select.form-control {background: #fff;border-radius: 5px;font-size: 14px;border: 1px solid #e0e0f6;font-weight: 400;height: auto;padding: 11px 10px;box-shadow: 0 5px 13px rgb(240 240 241 / 46%);outline: 0;width: 100%;color: #455A64;appearance: revert;}
+.cactuscrates-edit-form textarea.form-control {background: #fff; border-radius: 5px; font-size: 14px; border: 1px solid #fff; font-weight: 400; height: auto; padding: 0.8rem 0.94rem; box-shadow: 0 5px 13px rgb(240 240 241 / 46%); outline: 0; width: 100%; display: inline-block; color: #455A64; }
+.cactuscrates-edit-form .form-control:focus {border: 1px solid #00ee57; box-shadow: none;}
+
+.stock-form-group{position: relative;}
+span.stock-com-name {position: absolute;left: 0;top: 27px;padding: 8px 15px;background: #00ee57;font-size: 14px;color: #fff;border-radius: 5px 0 0 5px;text-transform: uppercase;}
+
+
+.upload-media label{width: 100%;border: 1px dashed #00ee57;border-radius: 5px;padding: 10px;box-shadow: 0px 4px 30px rgb(95 94 231 / 7%);background: #fff;text-align: center;font-size: 14px;}
+.uploadmediabtn {width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;}
+.uploadmediabtn:focus + label,
+.uploadmediabtn.has-focus + label,
+.uploadmediabtn + label:hover {color: #f28520;}
+.uploadmediabtn + label figure {width: 100px; height: 100px; border-radius: 50%; background-color: #d3394c; display: block; padding: 20px; margin: 0 auto 10px; }
+.upload-file span {font-size: 14px; letter-spacing: 0; color: #455A64; white-space: nowrap;text-align: left;}
+
+
+.Create-btn{text-align: center;border-radius: 5px;padding: 10px 30px;color: #fff;font-size: 14px;font-weight: 500;background: #00ee57;box-shadow: 0px 8px 13px hsl(142deg 100% 47% / 7%);display: inline-block;border: none;}
+.Cancel-btn{text-align: center;border-radius: 5px;padding: 10px 30px;color: #fff;font-size: 14px;font-weight: 500;background: #ff0a32;box-shadow: 0px 8px 13px hsl(350deg 100% 52% / 7%);display: inline-block;border: none;}

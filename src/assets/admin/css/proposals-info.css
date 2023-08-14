@@ -1,0 +1,55 @@
+.heading-section {padding: 10px 0; margin-bottom: 1rem; position: relative; }
+h4.heading-title {font-size: 16px;font-weight: 600;margin: 0;padding: 0;}
+.btn-option-info{margin-left: auto;}
+a.btn-gr {background: #92b116; padding: 8px 20px; display: inline-block; font-size: 12px; color: #fff; border-radius: 50px; text-transform: uppercase; font-weight: bold; }
+a.btn-ye {background: #f39323; padding: 8px 20px; display: inline-block; font-size: 12px; color: #fff; border-radius: 50px; text-transform: uppercase; font-weight: bold; }
+a.Back-btn {font-size: 16px; color: #00ee57; }
+.setting-header{display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem }
+
+.club-profile-card {background: #FFFFFF; position: relative; padding: 1rem;box-shadow: 0px 8px 13px rgba(0, 137, 207, 0.1); border-radius: 20px;     }
+.club-profile-card-image {width: 100px;background: #FFFFFF;box-shadow: 0px 1px 13px rgba(213, 243, 224, 0.36); height: 100px; margin: 0 auto 1rem auto; border-radius: 50%; overflow: hidden; position: relative; }
+.club-profile-card-image img {position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; max-width: 100%; max-height: 100%; }
+.club-info-box h3 {font-weight: 600; font-size: 18px; line-height: 21px; color: #03002b; margin: 0 0 5px; padding: 0;text-align: center; } 
+.club-info-box h5 {font-weight: 500; font-size: 16px; line-height: 21px; color: #455A64; margin: 0 0 1rem 0; padding: 0;text-align: center; }
+
+.proposal-voted-text{text-align: center;}
+.proposal-voted-text p {font-weight: 500; font-size: 14px; line-height: 126%; text-align: center; letter-spacing: -0.01em; color: #00EE57; }
+
+
+.proposals-info-results-item {background: #FFFFFF;margin-bottom: 10px; box-shadow: 0px 8px 13px rgba(0, 137, 207, 0.1); border-radius: 20px; display: flex; align-items: center;padding: 1rem; }
+
+.proposals-info-results-left {flex: 0 0 auto; width: 30%; display: flex; align-items: center;} 
+.results-status-progress {flex: 0 0 auto; width:70%; }
+
+.results-status-icon {background: #00EE57; width: 40px; height: 40px; border-radius: 50%; text-align: center; line-height: 40px; margin-right: 10px;}
+
+
+.results-status-text {font-weight: 600; font-size: 14px; line-height: 16px; color: #455A64; }
+
+.results-status-progress .progress {height: 10px; margin-bottom: 10px; background:#F0FBF4; }
+.results-status-progress .progress .progress-bar {background-color: #00EE57; }
+.results-progress-bar {position: relative; width: 100%; } 
+.progress-bar-user {background: #FFFFFF; box-shadow: 0px 2px 26px rgba(0, 238, 87, 0.1); width: 40px; height: 40px; text-align: center; line-height: 40px; font-size: 20px; border-radius: 50%; color: #26f170; position: absolute; top: -15px; }
+
+.results-status-progress-use-text {font-weight: 400; font-size: 13px; line-height: 14px; color: #8C9AA1; text-align: end; margin-bottom: 5px; }
+.results-status-icon i {color: #fff; font-size: 18px; line-height: 40px; }
+
+
+.red-results-item .results-status-icon{background: #FF0A32;}
+.red-results-item .progress .progress-bar {background: #FF0A32;}
+
+.red-results-item .progress-bar-user{color: #FF0A32;}
+
+.black-results-item .results-status-icon{background: #03002B;}
+.black-results-item .progress .progress-bar {background: #03002B;}
+.black-results-item .progress-bar-user{color: #03002B;}
+
+
+.sky-results-item .results-status-icon{background: #BCFBFF;}
+.sky-results-item .progress .progress-bar {background: #BCFBFF;}
+
+.sky-results-item .results-status-icon i{color: #4CACB3;}
+.sky-results-item .progress-bar-user{color: #4CACB3;}
+
+
+.proposals-info-results-section h2 {margin: 0; font-weight: 500; font-size: 18px; line-height: 21px; color: #455A64; }
