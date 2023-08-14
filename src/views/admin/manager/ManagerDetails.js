@@ -218,7 +218,7 @@ const ManagerDetails = () => {
                                 <div className={toggle === 1 ? 'tab-pane active' : 'tab-pane'} id="ActiveClubs">
                                     <div className="stockoptions-header">
                                         <div className="mr-auto">
-                                            <h4 className="heading-title">Active Clubs</h4>
+                                            <h4 className="heading-title">Active Clubs </h4>
                                         </div>
                                         <div className="stockoptions-filter wd30">
                                             <div className="row g-2">
