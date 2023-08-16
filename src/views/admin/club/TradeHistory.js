@@ -83,7 +83,18 @@ const TradeHistory = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="club-detail-content">
+
+                    <div>
+                        <nav className='p-0'>
+                            <ol className="cd-breadcrumb m-0">
+                                <li><Link to="/clubs">Clubs</Link></li>
+                                <li><Link to="" onClick={()=>navigate(-1)}>Club Details</Link></li>
+                                <li className="current"><em>Trade History</em></li>
+                            </ol>
+                        </nav>
+                    </div>
+
+                    <div className="club-detail-content mt-3">
                         <div className="stockoptions-header">
                             <div className="mr-auto">
                                 <h4 className="heading-title">Trade History</h4>

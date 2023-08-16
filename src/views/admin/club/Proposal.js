@@ -71,7 +71,18 @@ const Proposal = () => {
                             <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1) }} ><i className="las la-arrow-left"></i> Back</Link>
                         </div>
                     </div>
-                    <div className="club-detail-content">
+
+                    <div>
+                        <nav className='p-0'>
+                            <ol className="cd-breadcrumb m-0">
+                                <li><Link to="/clubs">Clubs</Link></li>
+                                <li><Link to="" onClick={() => navigate(-1)}>Club Details</Link></li>
+                                <li className="current"><em>Club's Proposals</em></li>
+                            </ol>
+                        </nav>
+                    </div>
+
+                    <div className="club-detail-content mt-3">
                         <div className="stockoptions-header">
                             <div className="mr-auto">
                                 <h4 className="heading-title">Cactus Club’s Proposals</h4>
