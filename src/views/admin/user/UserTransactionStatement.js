@@ -8,7 +8,7 @@ import { totalPageCalculator } from '../../../utils/status.utils';
 
 const LIMIT = 5;
 
-const TransactionState = () => {
+const UserTransactionStatement = () => {
 
     const [transaction, setTransaction] = useState([]);
     const [total, setTotal] = useState(0);
@@ -41,7 +41,7 @@ const TransactionState = () => {
                 <div className="heading-section">
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="mr-auto">
-                            <h4 className="heading-title">Manager Transaction Statement</h4>
+                            <h4 className="heading-title">User Transaction Statement</h4>
                         </div>
                         <div className='mx-3'>
                             <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1); }} ><i className="las la-arrow-left"></i> Back</Link>
@@ -52,8 +52,8 @@ const TransactionState = () => {
                 <div className='mb-3'>
                     <nav className='p-0'>
                         <ol class="cd-breadcrumb m-0">
-                            <li><Link to="/manager">Managers</Link></li>
-                            <li><Link to={`/manager-details/${id}`}>Manager Details</Link></li>
+                            <li><Link to="/users">Users</Link></li>
+                            <li><Link to={`/user-details/${id}`}>User Details</Link></li>
                             <li class="current"><em>Transaction Statement</em></li>
                         </ol>
                     </nav>
@@ -141,4 +141,4 @@ const TransactionState = () => {
     )
 }
 
-export default TransactionState
+export default UserTransactionStatement

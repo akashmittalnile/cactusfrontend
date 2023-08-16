@@ -74,8 +74,17 @@ const ManagerDetails = () => {
                         <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1); }} ><i className="las la-arrow-left"></i> Back</Link>
                     </div>
                     <div className="manager-club-action">
-                        <Link to={`/transaction-statement/${userId}`}>Transaction Statement</Link>
+                        <Link to={`/manager-transaction-statement/${userId}`}>Transaction Statement</Link>
                     </div>
+                </div>
+
+                <div>
+                    <nav className='p-0'>
+                        <ol class="cd-breadcrumb m-0">
+                            <li><Link to="/manager">Managers</Link></li>
+                            <li class="current"><em>Manager Details</em></li>
+                        </ol>
+                    </nav>
                 </div>
 
                 <div className="user-content-section">
@@ -185,7 +194,7 @@ const ManagerDetails = () => {
                                         <h3>{details.leadership ?? ""}</h3>
                                     </div>
                                     <div className="manager-overview-card-icon">
-                                        <img src={lsexp} alt="not-found" />
+                                        <img width={50} src={lsexp} alt="not-found" />
                                     </div>
                                 </div>
                             </div>
@@ -210,6 +219,7 @@ const ManagerDetails = () => {
                             <div className="my-order-tabs">
                                 <ul className="nav nav-tabs">
                                     <li><Link to="" className={toggle === 1 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(1); setManagerClubStatus(1); }} data-bs-toggle="tab">Created Clubs</Link></li>
+                                    <li><Link to="" className={toggle === 3 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(3); setManagerClubStatus(1); }} data-bs-toggle="tab">Portfolio stocks</Link></li>
                                     {/* <li><Link to="" className={toggle === 2 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(2); setManagerClubStatus(2); }} data-bs-toggle="tab">Inactive Clubs</Link> 
                                     </li>*/}
                                 </ul>

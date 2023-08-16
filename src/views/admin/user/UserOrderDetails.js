@@ -9,7 +9,7 @@ import profile from "../../../assets/images/admin/profile.png";
 import google from "../../../assets/images/admin/google.png";
 import { Modal, ModalBody } from "reactstrap";
 import { api } from '../../../utils/api.utils';
-import { decode } from 'base-64';
+import { decode, encode } from 'base-64';
 import ApiService from '../../../core/services/ApiService';
 
 const UserOrderDetails = () => {
@@ -62,6 +62,16 @@ const UserOrderDetails = () => {
                         </div>
                     </div>
 
+                    <div>
+                        <nav className='p-0'>
+                            <ol class="cd-breadcrumb m-0">
+                                <li><Link to="/users">Users</Link></li>
+                                <li><Link to={`/user-details/${encode(details.order_by)}`}>User Details</Link></li>
+                                <li class="current"><em>Stock Details</em></li>
+                            </ol>
+                        </nav>
+                    </div>
+
                     <div className="club-profit-funds-overview">
                         <div className="row">
                             <div className="col-md-3">
@@ -103,7 +113,7 @@ const UserOrderDetails = () => {
                             </div>
 
                             <div className="col-md-3">
-                                <div className="clients-content-card" style={{height: "75px"}}>
+                                <div className="clients-content-card" style={{ height: "75px" }}>
                                     <div className="clients-card-media-info">
                                         <div className="userImg"><img src={u1} alt="not-found" /></div>
                                         <div className="userImg"><img src={u2} alt="not-found" /></div>

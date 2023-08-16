@@ -29,6 +29,7 @@ import UserOrderDetails from "../views/admin/user/UserOrderDetails";
 import UpdatePage from "../views/admin/pages/UpdatePage";
 import TransactionState from "../views/admin/manager/TransactionState";
 import TransactionStatement from "../views/admin/transaction/TransactionStatement";
+import UserTransactionStatement from "../views/admin/user/UserTransactionStatement";
 
 
 var AdminRoutes = [
@@ -51,6 +52,11 @@ var AdminRoutes = [
         path: "/user/order-details/:id",
         layout: AdminLayout,
         component: UserOrderDetails,
+    },
+    {
+        path: "/users-transaction-statement/:id",
+        layout: AdminLayout,
+        component: UserTransactionStatement,
     },
     {
         path: "/view-clubs",
@@ -173,7 +179,7 @@ var AdminRoutes = [
         component: UpdatePage
     },
     {
-        path: "/transaction-statement/:id",
+        path: "/manager-transaction-statement/:id",
         layout: AdminLayout,
         component: TransactionState
     },

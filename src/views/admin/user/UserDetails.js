@@ -101,8 +101,22 @@ const UserDetails = () => {
         <>
             {loading ? <Loader /> : null}
             <div className="user-table-section">
-                <div className="heading-section">
-                    <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1); }}><i className="las la-arrow-left"></i> Back</Link>
+                <div className="heading-section d-flex justify-content-between">
+                    <div>
+                        <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1); }}><i className="las la-arrow-left"></i> Back</Link>
+                    </div>
+                    <div className="manager-club-action">
+                        <Link to={`/users-transaction-statement/${userId}`}>Transaction Statement</Link>
+                    </div>
+                </div>
+
+                <div>
+                    <nav className='p-0'>
+                        <ol class="cd-breadcrumb m-0">
+                            <li><Link to="/users">Users</Link></li>
+                            <li class="current"><em>User Details</em></li>
+                        </ol>
+                    </nav>
                 </div>
 
                 <div className="user-content-section">
@@ -237,7 +251,7 @@ const UserDetails = () => {
                                                                     <div className="stockoptions-item" onClick={(e) => { e.preventDefault(); navigate(`/user/order-details/${encode(ele.id)}`) }}>
                                                                         <div className="stockoptions-head">
                                                                             <div className={ele.type === 'buy' ? "byusell-option buy-opt" : "byusell-option sell-opt"}>{ele.type === 'buy' ? "Buy" : "Sell"}</div>
-                                                                            <div className="stockoptions-msg-text">{ele.statusText}</div>
+                                                                            {/* <div className="stockoptions-msg-text">{ele.statusText}</div> */}
                                                                         </div>
                                                                         <div className="stockoptions-body">
                                                                             <div className="shares-comp-info">
