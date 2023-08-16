@@ -59,7 +59,16 @@ const ApprovedUser = () => {
                     <Link className="Back-btn" to="/users"><i className="las la-arrow-left"></i> Back</Link>
                 </div>
 
-                <div className="stockoptions-header">
+                <div>
+                    <nav className='p-0'>
+                        <ol className="cd-breadcrumb m-0">
+                            <li><Link to="/users">Users</Link></li>
+                            <li className="current"><em>User Details</em></li>
+                        </ol>
+                    </nav>
+                </div>
+
+                <div className="stockoptions-header mt-3">
                     <div className="mr-auto">
                         <h4 className="heading-title">Approve User Profile</h4>
                     </div>

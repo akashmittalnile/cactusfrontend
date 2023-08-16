@@ -8,10 +8,18 @@ import u2 from "../../../assets/images/admin/u2.png";
 import u3 from "../../../assets/images/admin/u3.png";
 import Loader from "../../common/Loader";
 import { api } from '../../../utils/api.utils';
+import { totalPageCalculator } from '../../../utils/status.utils';
+
+const LIMIT = 6;
+
 
 const Club = () => {
 
     const [toggle, setToggle] = useState(1);
+    const [total1, setTotal1] = useState(0);
+    const [pageNum1, setPageNum1] = useState(1);
+    const [total2, setTotal2] = useState(0);
+    const [pageNum2, setPageNum2] = useState(1);
     const [userClubs, setUserClub] = useState([]);
     const [users, setUser] = useState([]);
     const [managers, setManager] = useState([]);
@@ -22,7 +30,10 @@ const Club = () => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         console.log("all user clubs list => ", response.data.body);
-        if (response.data.headers.success === 1) setUserClub(response.data.body);
+        if (response.data.headers.success === 1) {
+            setUserClub(response.data.body.listing);
+            setTotal1(response.data.body.totalCount);
+        }
         else setUserClub([]);
         setLoading(false);
     }
@@ -31,7 +42,10 @@ const Club = () => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         console.log("all manager clubs list => ", response.data.body);
-        if (response.data.headers.success === 1) setManagerClub(response.data.body);
+        if (response.data.headers.success === 1) {
+            setManagerClub(response.data.body.listing);
+            setTotal2(response.data.body.totalCount);
+        }
         else setManagerClub([]);
         setLoading(false);
     }
@@ -40,18 +54,22 @@ const Club = () => {
         e.persist();
         let name = "";
         let status = "";
+        let created_by = "";
         if (e.target.name === 'name') name = e.target.value;
         if (e.target.name === 'status') status = e.target.value;
-        getUserList(api.AllUserClub + `?name=${name}&status=${status}`);
+        if (e.target.name === 'created_by') created_by = e.target.value;
+        getUserList(api.AllUserClub + `?name=${name}&status=${status}&created_by=${created_by}`);
     }
 
     const handleFilterManager = (e) => {
         e.persist();
         let name = "";
         let status = "";
+        let created_by = "";
         if (e.target.name === 'name') name = e.target.value;
         if (e.target.name === 'status') status = e.target.value;
-        getManagerList(api.AllManagerClub + `?name=${name}&status=${status}`);
+        if (e.target.name === 'created_by') created_by = e.target.value;
+        getManagerList(api.AllManagerClub + `?name=${name}&status=${status}&created_by=${created_by}`);
     }
 
     const getUserManagerNameList = async () => {
@@ -66,11 +84,11 @@ const Club = () => {
     }
 
     useEffect(() => {
-        getUserList(api.AllUserClub);
-        getManagerList(api.AllManagerClub);
+        getUserList(api.AllUserClub + `?page=${pageNum1}&limit=${LIMIT}`);
+        getManagerList(api.AllManagerClub + `?page=${pageNum2}&limit=${LIMIT}`);
         getUserManagerNameList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [toggle, pageNum1, pageNum2]);
 
     return (
         <>
@@ -101,7 +119,7 @@ const Club = () => {
                                     <div className="row g-2">
 
                                         <div className="col-md-4">
-                                            <select className="form-control text-capitalize" name='status' onChange={(e) => handleFilterManager(e)} style={{ height: "39.5px" }}>
+                                            <select className="form-control text-capitalize" name='created_by' onChange={(e) => handleFilterManager(e)} style={{ height: "39.5px" }}>
                                                 <option value="">Select Manager</option>
                                                 {
                                                     managers.map((ele, index) => {
@@ -185,6 +203,36 @@ const Club = () => {
                                             )
                                     }
 
+                                    {
+                                        managerClubs.length !== 0 ?
+                                            (
+                                                <div className="cactus-table-pagination">
+                                                    <ul className="cactus-pagination">
+                                                        {pageNum2 !== 1 && <li className="disabled" id="example_previous" onClick={() => setPageNum2(pageNum2 - 1)}>
+                                                            <Link to="" aria-controls="example" data-dt-idx="0" tabIndex="0" className="page-link">Previous</Link>
+                                                        </li>}
+
+                                                        {
+                                                            totalPageCalculator(total2, LIMIT).length === 1 ? null :
+                                                                (totalPageCalculator(total2, LIMIT).map((pageNo, indx) => {
+                                                                    return (
+                                                                        <li className={pageNo === pageNum2 ? "active" : ""} key={indx} onClick={() => setPageNum2(pageNo)}>
+                                                                            <Link to="" className="page-link">{pageNo}</Link>
+                                                                        </li>
+                                                                    )
+                                                                }))
+                                                        }
+
+                                                        {pageNum2 !== Math.ceil(total2 / LIMIT) && <li className="next" id="example_next" onClick={() => setPageNum2(pageNum2 + 1)}>
+                                                            <Link to="" aria-controls="example" data-dt-idx="7" tabIndex="0" className="page-link">Next</Link>
+                                                        </li>}
+                                                    </ul>
+                                                </div>
+                                            )
+                                            :
+                                            null
+                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -198,7 +246,7 @@ const Club = () => {
                                     <div className="row g-2">
 
                                         <div className="col-md-4">
-                                            <select className="form-control text-capitalize" name='status' onChange={(e) => handleFilterManager(e)} style={{ height: "39.5px" }}>
+                                            <select className="form-control text-capitalize" name='created_by' onChange={(e) => handleFilterUser(e)} style={{ height: "39.5px" }}>
                                                 <option value="">Select User</option>
                                                 {
                                                     users.map((ele, index) => {
@@ -280,6 +328,36 @@ const Club = () => {
                                                 </div>
 
                                             )
+                                    }
+
+                                    {
+                                        userClubs.length !== 0 ?
+                                            (
+                                                <div className="cactus-table-pagination">
+                                                    <ul className="cactus-pagination">
+                                                        {pageNum1 !== 1 && <li className="disabled" id="example_previous" onClick={() => setPageNum1(pageNum1 - 1)}>
+                                                            <Link to="" aria-controls="example" data-dt-idx="0" tabIndex="0" className="page-link">Previous</Link>
+                                                        </li>}
+
+                                                        {
+                                                            totalPageCalculator(total1, LIMIT).length === 1 ? null :
+                                                                (totalPageCalculator(total1, LIMIT).map((pageNo, indx) => {
+                                                                    return (
+                                                                        <li className={pageNo === pageNum1 ? "active" : ""} key={indx} onClick={() => setPageNum1(pageNo)}>
+                                                                            <Link to="" className="page-link">{pageNo}</Link>
+                                                                        </li>
+                                                                    )
+                                                                }))
+                                                        }
+
+                                                        {pageNum1 !== Math.ceil(total1 / LIMIT) && <li className="next" id="example_next" onClick={() => setPageNum1(pageNum1 + 1)}>
+                                                            <Link to="" aria-controls="example" data-dt-idx="7" tabIndex="0" className="page-link">Next</Link>
+                                                        </li>}
+                                                    </ul>
+                                                </div>
+                                            )
+                                            :
+                                            null
                                     }
 
                                 </div>

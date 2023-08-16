@@ -28,12 +28,13 @@ import u3 from "../../../assets/images/admin/u3.png";
 const ManagerDetails = () => {
 
     const navigate = useNavigate();
-    const [toggle, setToggle] = useState(1);
+    const [toggle, setToggle] = useState(3);
     const { id: userId } = useParams();
     const [loading, setLoading] = useState(false);
     const [details, setDetails] = useState({});
     const [managerClub, setManagerClub] = useState([]);
-    const [managerClubStatus, setManagerClubStatus] = useState(1);
+    const [portfolio, setPortfolio] = useState([]);
+    const [listing, setListing] = useState([]);
 
     const userDetails = async (api) => {
         setLoading(true);
@@ -43,14 +44,33 @@ const ManagerDetails = () => {
         setLoading(false);
     }
 
+    const currentPrice = (sym) => {
+        let obj = listing.find(o => o.symbol === sym);
+        return obj.current_price ?? 0;
+    }
+
+    const portfolioList = async (api) => {
+        setLoading(true);
+        const response = await ApiService.getAPIWithAccessToken(api);
+        console.log("all portfolio => ", response.data.body);
+        if (response.data.headers.success === 1) {
+            setPortfolio(response.data.body.portfolio);
+            setListing(response.data.body.listing);
+        }
+        setLoading(false);
+    }
+
     const handleFilter = (e) => {
         e.persist();
         let name = "";
+        let status = "";
         if (e.target.name === 'name') name = e.target.value;
-        managerClubList(api.ManagerClub + `${decode(userId)}?status=${managerClubStatus}&name=${name}`);
+        if (e.target.name === 'status') status = e.target.value;
+        managerClubList(api.ManagerClub + `${decode(userId)}?status=${status}&name=${name}`);
     }
 
     const managerClubList = async (api) => {
+        console.log(api);
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         console.log("manager club list => ", response.data.body);
@@ -61,9 +81,10 @@ const ManagerDetails = () => {
 
     useEffect(() => {
         userDetails(api.UserDetails + `${decode(userId)}`);
-        managerClubList(api.ManagerClub + `${decode(userId)}?status=${managerClubStatus}`);
+        managerClubList(api.ManagerClub + `${decode(userId)}?status=1`);
+        portfolioList(api.Portfolio + `${decode(userId)}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [managerClubStatus]);
+    }, [toggle]);
 
     return (
         <>
@@ -218,10 +239,8 @@ const ManagerDetails = () => {
                         <div className="my-order-section">
                             <div className="my-order-tabs">
                                 <ul className="nav nav-tabs">
-                                    <li><Link to="" className={toggle === 1 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(1); setManagerClubStatus(1); }} data-bs-toggle="tab">Created Clubs</Link></li>
-                                    <li><Link to="" className={toggle === 3 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(3); setManagerClubStatus(1); }} data-bs-toggle="tab">Portfolio stocks</Link></li>
-                                    {/* <li><Link to="" className={toggle === 2 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(2); setManagerClubStatus(2); }} data-bs-toggle="tab">Inactive Clubs</Link> 
-                                    </li>*/}
+                                    <li><Link to="" className={toggle === 3 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(3); }} data-bs-toggle="tab">Portfolio stocks</Link></li>
+                                    <li><Link to="" className={toggle === 1 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(1); }} data-bs-toggle="tab">Created Clubs</Link></li>
                                 </ul>
                             </div>
                             <div className="order-content tab-content">
@@ -230,12 +249,21 @@ const ManagerDetails = () => {
                                         <div className="mr-auto">
                                             <h4 className="heading-title">Active Clubs </h4>
                                         </div>
-                                        <div className="stockoptions-filter wd30">
+                                        <div className="stockoptions-filter wd50">
                                             <div className="row g-2">
-                                                <div className="col-md-12">
+                                                <div className="col-md-6">
                                                     <div className="search-form-group">
-                                                        <input type="text" name="name" onChange={(e) => handleFilter(e)} className="form-control" placeholder="Search by Club Name" style={{ color: "#000" }} />
+                                                        <input type="text" name="name" onChange={(e) => handleFilter(e)} className="form-control" placeholder="Search by Club Name" style={{ color: "#000", height: "44.5px" }} />
                                                         <span className="search-icon"><i className="la la-search"></i></span>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="search-form-group">
+                                                        <select name="status" onChange={(e) => handleFilter(e)} className="form-control" style={{ height: "44.5px" }}>
+                                                            <option value="">Select Status</option>
+                                                            <option value="1">Active</option>
+                                                            <option value="2">Inactive</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -293,7 +321,7 @@ const ManagerDetails = () => {
                                                     :
                                                     (
                                                         <div className="col-12 text-center mt-4">
-                                                            <p>No active club found</p>
+                                                            <p>No club found</p>
                                                         </div>
                                                     )
                                             }
@@ -303,81 +331,64 @@ const ManagerDetails = () => {
                                     </div>
                                 </div>
 
-                                <div className={toggle === 2 ? 'tab-pane active' : 'tab-pane'} id="InactiveClubs">
+                                <div className={toggle === 3 ? 'tab-pane active' : 'tab-pane'} id="InactiveClubs">
+
                                     <div className="stockoptions-header">
                                         <div className="mr-auto">
-                                            <h4 className="heading-title">Inactive Clubs</h4>
+                                            {/* <h4 className="heading-title">Inactive Clubs</h4> */}
                                         </div>
                                         <div className="stockoptions-filter wd30">
                                             <div className="row g-2">
-                                                <div className="col-md-12">
-                                                    <div className="search-form-group">
-                                                        <input type="text" name="name" onChange={(e) => handleFilter(e)} className="form-control" placeholder="Search by Club Name" style={{ color: "#000" }} />
-                                                        <span className="search-icon"><i className="la la-search"></i></span>
-                                                    </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="stockoptions-content-list">
-                                        <div className="row">
+                                        <div className="user-table-card">
+                                            <div className="table-responsive">
+                                                <table className="table table-users">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.No</th>
+                                                            <th>Name</th>
+                                                            <th>Symbol</th>
+                                                            <th>Total price</th>
+                                                            <th>Current Price</th>
+                                                            <th>Quantity</th>
+                                                        </tr>
+                                                    </thead>
 
-                                            {
-                                                managerClub.length !== 0 ?
-                                                    (
-                                                        managerClub.map((ele, indx) => {
-                                                            return (
-                                                                <div key={indx} className="col-md-4">
-                                                                    <div className="manager-club-item">
-                                                                        <div className="manager-club-profile">
-                                                                            <div className="clubs-card-image">
-                                                                                {
-                                                                                    (ele.club_image === "" || ele.club_image === null || ele.club_image === undefined) ? (
-                                                                                        <>
-                                                                                            <div className="userImg"><img alt="not-found" src={u1} /></div>
-                                                                                            <div className="userImg"><img alt="not-found" src={u2} /></div>
-                                                                                            <div className="userImg"><img alt="not-found" src={u3} /></div>
-                                                                                        </>
-                                                                                    )
-                                                                                        :
-                                                                                        (
-                                                                                            <div className="userImg"><img alt="not-found-image" src={ele.club_image} /></div>
-                                                                                        )
-                                                                                }
-                                                                            </div>
-                                                                            <div className="manager-club-profile-text">
-                                                                                <h5>{ele.name ?? "NA"}</h5>
-                                                                                <p>{ele.member_count ?? 0} Members</p>
-                                                                            </div>
-                                                                            <div className="manager-club-action">
-                                                                                <Link to={`/club-details/${encode(ele.id)}/${encode('manager')}`}>View</Link>
-                                                                            </div>
-                                                                        </div>
-                                                                        {/* <div className="manager-club-content-info">
-                                                                            <div className="manager-club-portfolio-text">
-                                                                                <p>Portfolio </p>
-                                                                                <h2>$1478.00 </h2>
-                                                                            </div>
-                                                                            <div className="manager-club-manstock stockup">
-                                                                                <i className="las la-angle-up"></i> $873
-                                                                            </div>
-                                                                        </div> */}
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        })
-                                                    )
-                                                    :
-                                                    (
-                                                        <div className="col-12 text-center mt-4">
-                                                            <p>No inactive club found</p>
-                                                        </div>
-                                                    )
-                                            }
-
+                                                    <tbody>
+                                                        {
+                                                            portfolio.length !== 0 ?
+                                                                (
+                                                                    portfolio.map((ele, indx) => {
+                                                                        return (
+                                                                            <tr key={indx}>
+                                                                                <td>{indx + 1}</td>
+                                                                                <td className='text-capitalize'>{ele.name ?? "NA"}</td>
+                                                                                <td>{ele.symbol ?? "NA"}</td>
+                                                                                <td>{parseFloat(ele.total_cost).toFixed(2) ?? 0}</td>
+                                                                                <td>{currentPrice(ele.symbol)}</td>
+                                                                                <td>{ele.quantity ?? 0}</td>
+                                                                            </tr>
+                                                                        )
+                                                                    })
+                                                                )
+                                                                :
+                                                                (
+                                                                    <tr className='text-center'>
+                                                                        <td colSpan={6}>No protfolio stock found</td>
+                                                                    </tr>
+                                                                )
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

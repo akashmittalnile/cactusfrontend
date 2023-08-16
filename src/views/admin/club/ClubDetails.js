@@ -31,7 +31,6 @@ const ClubDetails = () => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         console.log("club details => ", response.data.body);
-
         if (response.data.headers.success === 1) {
             setClub(response.data.body);
             if (response.data.body.join_members !== null)
@@ -40,15 +39,6 @@ const ClubDetails = () => {
                 setClientMember(JSON.parse(response.data.body.club_member_balance))
         }
         else setClub([]);
-        setLoading(false);
-    }
-
-    const getProposalVotes = async (api) => {
-        setLoading(true);
-        const response = await ApiService.getAPIWithAccessToken(api);
-        console.log("club proposal votes => ", response.data.body);
-        if (response.data.headers.success === 1) setVotes(response.data.body);
-        else setVotes([]);
         setLoading(false);
     }
 
@@ -122,8 +112,8 @@ const ClubDetails = () => {
                     <div>
                         <nav className='p-0'>
                             <ol className="cd-breadcrumb m-0">
-                                <li><Link to="/users">Users</Link></li>
-                                <li className="current"><em>User Details</em></li>
+                                <li><Link to="/clubs">Clubs</Link></li>
+                                <li className="current"><em>Club Details</em></li>
                             </ol>
                         </nav>
                     </div>

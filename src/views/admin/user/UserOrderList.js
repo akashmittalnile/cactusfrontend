@@ -120,7 +120,7 @@ const UserOrderList = () => {
                                                         <div className="stockoptions-item" onClick={(e) => { e.preventDefault(); navigate(`/user/order-details/${encode(ele.id)}`) }}>
                                                             <div className="stockoptions-head">
                                                                 <div className={ele.type === 'buy' ? "byusell-option buy-opt" : "byusell-option sell-opt"}>{ele.type === 'buy' ? "Buy" : "Sell"}</div>
-                                                                <div className="stockoptions-msg-text">{ele.statusText}</div>
+                                                                {/* <div className="stockoptions-msg-text">{ele.statusText}</div> */}
                                                             </div>
                                                             <div className="stockoptions-body">
                                                                 <div className="shares-comp-info">

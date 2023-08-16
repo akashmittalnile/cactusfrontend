@@ -61,7 +61,16 @@ const ApprovedManager = () => {
                     <Link className="Back-btn" to="/manager"><i className="las la-arrow-left"></i> Back</Link>
                 </div>
 
-                <div className="stockoptions-header">
+                <div>
+                    <nav className='p-0'>
+                        <ol className="cd-breadcrumb m-0">
+                            <li><Link to="/manager">Managers</Link></li>
+                            <li className="current"><em>Approve Manager Profile</em></li>
+                        </ol>
+                    </nav>
+                </div>
+
+                <div className="stockoptions-header mt-3">
                     <div className="mr-auto">
                         <h4 className="heading-title">Approve Managers Profile</h4>
                     </div>
