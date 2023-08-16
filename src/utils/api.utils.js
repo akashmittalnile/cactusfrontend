@@ -43,5 +43,6 @@ exports.api = {
     AllNews: `admin/page?post_type=news`,
     DeleteNews: `admin/post/id/`,
     UpdateNews: `admin/news/id/`,
-    TransactionStatement: `admin/statement`
+    TransactionStatement: `admin/statement`,
+    Portfolio: `admin/portfolio/id/`,
 };

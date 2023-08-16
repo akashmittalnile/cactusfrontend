@@ -184,7 +184,7 @@ const Proposal = () => {
                                             <div className="cactus-table-pagination">
                                                 <ul className="cactus-pagination">
                                                     {pageNum !== 1 && <li className="disabled" id="example_previous" onClick={() => setPageNum(pageNum - 1)}>
-                                                        <a href="#" aria-controls="example" data-dt-idx="0" tabIndex="0" className="page-link">Previous</a>
+                                                        <Link to="" aria-controls="example" data-dt-idx="0" tabIndex="0" className="page-link">Previous</Link>
                                                     </li>}
 
                                                     {
@@ -192,14 +192,14 @@ const Proposal = () => {
                                                             (totalPageCalculator(total, LIMIT).map((pageNo, indx) => {
                                                                 return (
                                                                     <li className={pageNo === pageNum ? "active" : ""} key={indx} onClick={() => setPageNum(pageNo)}>
-                                                                        <a href="#" className="page-link">{pageNo}</a>
+                                                                        <Link to="" className="page-link">{pageNo}</Link>
                                                                     </li>
                                                                 )
                                                             }))
                                                     }
 
                                                     {pageNum !== Math.ceil(total / LIMIT) && <li className="next" id="example_next" onClick={() => setPageNum(pageNum + 1)}>
-                                                        <a href="#" aria-controls="example" data-dt-idx="7" tabIndex="0" className="page-link">Next</a>
+                                                        <Link to="" aria-controls="example" data-dt-idx="7" tabIndex="0" className="page-link">Next</Link>
                                                     </li>}
                                                 </ul>
                                             </div>

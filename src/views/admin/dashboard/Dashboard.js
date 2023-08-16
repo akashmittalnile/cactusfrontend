@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "../../../assets/admin/css/dasboard.css";
-import { LineChart, Line, Tooltip } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ApiService from '../../../core/services/ApiService';
 import user from "../../../assets/images/admin/user-large.svg";
 import manage from "../../../assets/images/admin/manager-large.svg";
@@ -21,7 +21,50 @@ import { encode } from 'base-64';
 import john from "../../../assets/images/admin/john-doe.png";
 import john1 from "../../../assets/images/admin/john-doe1.png";
 
-
+const data = [
+    {
+        name: 'Page A',
+        uv: 6000,
+        pv: 2400,
+        amt: 4000,
+    },
+    {
+        name: 'Page B',
+        uv: 3000,
+        pv: 1398,
+        amt: 8210,
+    },
+    {
+        name: 'Page C',
+        uv: 2000,
+        pv: 9800,
+        amt: 7290,
+    },
+    {
+        name: 'Page D',
+        uv: 2780,
+        pv: 3908,
+        amt: 5000,
+    },
+    {
+        name: 'Page E',
+        uv: 1890,
+        pv: 4800,
+        amt: 4181,
+    },
+    {
+        name: 'Page F',
+        uv: 7390,
+        pv: 3800,
+        amt: 3500,
+    },
+    {
+        name: 'Page G',
+        uv: 3490,
+        pv: 2300,
+        amt: 1100,
+    },
+];
 const data1 = [{ amt: 10 }, { amt: 80 }, { amt: 200 }, { amt: 80 }, { amt: 200 }, { amt: 240 }, { amt: 180 }, { amt: 230 }, { amt: 50 }, { amt: 250 }];
 
 const Dashboard = () => {
@@ -487,6 +530,33 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
+
+
+                <div className="user-content-section mt-4">
+                    <div className="user-table-card">
+                        <LineChart
+                            width={1170}
+                            height={360}
+                            data={data}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="0 0" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeWidth={3} />
+                            <Line type="monotone" dataKey="uv" stroke="#82ca9d" strokeWidth={3} />
+                            <Line type="monotone" dataKey="amt" stroke="#ff0a32" strokeWidth={3} />
+                        </LineChart>
+                    </div>
+                </div>
+
 
                 <Modal isOpen={isDelete.status} toggle={() => { setDelete({ status: false, id: "", statusNumber: "", title: "" }); }} className="njmep-modal">
                     <div className="modal-content">

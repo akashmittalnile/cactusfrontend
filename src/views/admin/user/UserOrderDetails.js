@@ -64,10 +64,11 @@ const UserOrderDetails = () => {
 
                     <div>
                         <nav className='p-0'>
-                            <ol class="cd-breadcrumb m-0">
+                            <ol className="cd-breadcrumb m-0">
                                 <li><Link to="/users">Users</Link></li>
                                 <li><Link to={`/user-details/${encode(details.order_by)}`}>User Details</Link></li>
-                                <li class="current"><em>Stock Details</em></li>
+                                <li><Link to="" onClick={()=>navigate(-1)}>User Orders</Link></li>
+                                <li className="current"><em>Order Details</em></li>
                             </ol>
                         </nav>
                     </div>

@@ -51,10 +51,10 @@ const UserTransactionStatement = () => {
 
                 <div className='mb-3'>
                     <nav className='p-0'>
-                        <ol class="cd-breadcrumb m-0">
+                        <ol className="cd-breadcrumb m-0">
                             <li><Link to="/users">Users</Link></li>
                             <li><Link to={`/user-details/${id}`}>User Details</Link></li>
-                            <li class="current"><em>Transaction Statement</em></li>
+                            <li className="current"><em>Transaction Statement</em></li>
                         </ol>
                     </nav>
                 </div>
@@ -107,7 +107,7 @@ const UserTransactionStatement = () => {
                                                 <div className="cactus-table-pagination">
                                                     <ul className="cactus-pagination">
                                                         {pageNum !== 1 && <li className="disabled" id="example_previous" onClick={() => setPageNum(pageNum - 1)}>
-                                                            <a href="#" aria-controls="example" data-dt-idx="0" tabIndex="0" className="page-link">Previous</a>
+                                                            <Link to="" aria-controls="example" data-dt-idx="0" tabIndex="0" className="page-link">Previous</Link>
                                                         </li>}
 
                                                         {
@@ -115,14 +115,14 @@ const UserTransactionStatement = () => {
                                                                 (totalPageCalculator(total, LIMIT).map((pageNo, indx) => {
                                                                     return (
                                                                         <li className={pageNo === pageNum ? "active" : ""} key={indx} onClick={() => setPageNum(pageNo)}>
-                                                                            <a href="#" className="page-link">{pageNo}</a>
+                                                                            <Link to="" className="page-link">{pageNo}</Link>
                                                                         </li>
                                                                     )
                                                                 }))
                                                         }
 
                                                         {pageNum !== Math.ceil(total / LIMIT) && <li className="next" id="example_next" onClick={() => setPageNum(pageNum + 1)}>
-                                                            <a href="#" aria-controls="example" data-dt-idx="7" tabIndex="0" className="page-link">Next</a>
+                                                            <Link to="" aria-controls="example" data-dt-idx="7" tabIndex="0" className="page-link">Next</Link>
                                                         </li>}
                                                     </ul>
                                                 </div>

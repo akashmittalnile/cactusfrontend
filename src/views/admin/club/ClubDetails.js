@@ -93,6 +93,7 @@ const ClubDetails = () => {
                             <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1); }}><i className="las la-arrow-left"></i> Back</Link>
                             {/*  <h4 className="heading-title">Johnson & Johnson</h4> */}
                         </div>
+
                         <div className="stockoptions-filter wd40">
                             <div className="row g-2">
                                 <div className="col-md-4">
@@ -117,7 +118,17 @@ const ClubDetails = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="club-detail-content">
+
+                    <div>
+                        <nav className='p-0'>
+                            <ol className="cd-breadcrumb m-0">
+                                <li><Link to="/users">Users</Link></li>
+                                <li className="current"><em>User Details</em></li>
+                            </ol>
+                        </nav>
+                    </div>
+
+                    <div className="club-detail-content mt-3">
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="club-chart-card d-flex">
@@ -132,7 +143,7 @@ const ClubDetails = () => {
                                             )
                                                 :
                                                 (
-                                                    <div className="userImg" style={{width: "50px", height: "50px"}}><img alt="not-found-image" src={club.image_url} /></div>
+                                                    <div className="userImg" style={{ width: "50px", height: "50px" }}><img alt="not-found-image" src={club.image_url} /></div>
                                                 )
                                         }
                                     </div>

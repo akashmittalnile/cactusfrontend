@@ -13,6 +13,8 @@ const Club = () => {
 
     const [toggle, setToggle] = useState(1);
     const [userClubs, setUserClub] = useState([]);
+    const [users, setUser] = useState([]);
+    const [managers, setManager] = useState([]);
     const [managerClubs, setManagerClub] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -52,9 +54,21 @@ const Club = () => {
         getManagerList(api.AllManagerClub + `?name=${name}&status=${status}`);
     }
 
+    const getUserManagerNameList = async () => {
+        setLoading(true);
+        const response1 = await ApiService.getAPIWithAccessToken(api.AllUser);
+        if (response1.data.headers.success === 1) setUser(response1.data.body);
+        else setUser([]);
+        const response2 = await ApiService.getAPIWithAccessToken(api.AllManager);
+        if (response2.data.headers.success === 1) setManager(response2.data.body);
+        else setManager([]);
+        setLoading(false);
+    }
+
     useEffect(() => {
         getUserList(api.AllUserClub);
         getManagerList(api.AllManagerClub);
+        getUserManagerNameList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -87,6 +101,16 @@ const Club = () => {
                                     <div className="row g-2">
 
                                         <div className="col-md-4">
+                                            <select className="form-control text-capitalize" name='status' onChange={(e) => handleFilterManager(e)} style={{ height: "39.5px" }}>
+                                                <option value="">Select Manager</option>
+                                                {
+                                                    managers.map((ele, index) => {
+                                                        return (
+                                                            <option key={index} value={ele.id}>{ele.first_name ?? ""} {ele.last_name ?? ""}</option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
                                         </div>
 
                                         <div className="col-md-4">
@@ -122,7 +146,7 @@ const Club = () => {
                                                             <div className={"clubs-card"}>
                                                                 <div className="clubs-card-head">
                                                                     <div className="clubs-name text-capitalize">{ele.name ?? "NA"}</div>
-                                                                    {/* <div className="clubs-value">+44.26</div> */}
+                                                                    <div className="clubs-value">{ele.first_name ?? ""} {ele.last_name ?? ""}</div>
                                                                 </div>
                                                                 <div className="clubs-card-body">
                                                                     <div className="clubs-card-image">
@@ -174,6 +198,16 @@ const Club = () => {
                                     <div className="row g-2">
 
                                         <div className="col-md-4">
+                                            <select className="form-control text-capitalize" name='status' onChange={(e) => handleFilterManager(e)} style={{ height: "39.5px" }}>
+                                                <option value="">Select User</option>
+                                                {
+                                                    users.map((ele, index) => {
+                                                        return (
+                                                            <option key={index} value={ele.id}>{ele.first_name ?? ""} {ele.last_name ?? ""}</option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
                                         </div>
 
                                         <div className="col-md-4">
@@ -209,6 +243,7 @@ const Club = () => {
                                                             <div className={"clubs-card"}>
                                                                 <div className="clubs-card-head">
                                                                     <div className="clubs-name text-capitalize">{ele.name ?? "NA"}</div>
+                                                                    <div className="clubs-value">{ele.first_name ?? ""} {ele.last_name ?? ""}</div>
                                                                 </div>
                                                                 <div className="clubs-card-body">
                                                                     <div className="clubs-card-image">

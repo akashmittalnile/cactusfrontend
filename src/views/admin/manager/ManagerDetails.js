@@ -80,9 +80,9 @@ const ManagerDetails = () => {
 
                 <div>
                     <nav className='p-0'>
-                        <ol class="cd-breadcrumb m-0">
+                        <ol className="cd-breadcrumb m-0">
                             <li><Link to="/manager">Managers</Link></li>
-                            <li class="current"><em>Manager Details</em></li>
+                            <li className="current"><em>Manager Details</em></li>
                         </ol>
                     </nav>
                 </div>

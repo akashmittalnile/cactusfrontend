@@ -23,32 +23,29 @@ import { decode } from 'base-64';
 import moment from 'moment';
 import { api } from '../../../utils/api.utils';
 import { encode } from 'base-64';
-import { totalPageCalculator, userStatus } from '../../../utils/status.utils';
+import { userStatus } from '../../../utils/status.utils';
 
-const LIMIT = 4;
 
 const UserDetails = () => {
 
     const navigate = useNavigate();
-    const [total, setTotal] = useState(0);
-    const [pageNum, setPageNum] = useState(1);
     const [toggle, setToggle] = useState(1);
     const { id: userId } = useParams();
     const [loading, setLoading] = useState(false);
-    const [userOrder, setUserOrder] = useState([]);
     const [userClub, setUserClubs] = useState([]);
+    const [portfolio, setPortfolio] = useState([]);
+    const [listing, setListing] = useState([]);
     const [details, setDetails] = useState({});
 
-    const orderList = async (api) => {
-        console.log(api);
+
+    const portfolioList = async (api) => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
-        console.log("all users order list => ", response.data.body);
+        console.log("all portfolio => ", response.data.body);
         if (response.data.headers.success === 1) {
-            setUserOrder(response.data.body.listing);
-            setTotal(response.data.body.totalCount);
+            setPortfolio(response.data.body.portfolio);
+            setListing(response.data.body.listing);
         }
-        else setUserOrder([]);
         setLoading(false);
     }
 
@@ -68,17 +65,9 @@ const UserDetails = () => {
         setLoading(false);
     }
 
-    const handleFilter = (e) => {
-        e.persist();
-        let name = "";
-        let start_date = "";
-        let end_date = "";
-        let order_type = "";
-        if (e.target.name === 'name') name = e.target.value;
-        if (e.target.name === 'start_date') start_date = e.target.value;
-        if (e.target.name === 'end_date') end_date = e.target.value;
-        if (e.target.name === 'order_type') order_type = e.target.value;
-        orderList(api.UserOrderList + `${decode(userId)}?name=${name}&start_date=${start_date}&end_date=${end_date}&order_type=${order_type}`);
+    const currentPrice = (sym) => {
+        let obj = listing.find(o => o.symbol === sym);
+        return obj.current_price ?? 0;
     }
 
     const clubFilter = (e) => {
@@ -91,11 +80,11 @@ const UserDetails = () => {
     }
 
     useEffect(() => {
-        orderList(api.UserOrderList + `${decode(userId)}?page=${pageNum}&limit=${LIMIT}`)
         userDetails(api.UserDetails + `${decode(userId)}`);
         clubList(api.UserClubList + `${decode(userId)}`);
+        portfolioList(api.Portfolio + `${decode(userId)}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [toggle, pageNum]);
+    }, [toggle]);
 
     return (
         <>
@@ -105,16 +94,17 @@ const UserDetails = () => {
                     <div>
                         <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1); }}><i className="las la-arrow-left"></i> Back</Link>
                     </div>
-                    <div className="manager-club-action">
+                    <div className="manager-club-action d-flex wd30">
+                        <Link className='mx-2' to={`/user/orders/${userId}`}>Orders</Link>
                         <Link to={`/users-transaction-statement/${userId}`}>Transaction Statement</Link>
                     </div>
                 </div>
 
                 <div>
                     <nav className='p-0'>
-                        <ol class="cd-breadcrumb m-0">
+                        <ol className="cd-breadcrumb m-0">
                             <li><Link to="/users">Users</Link></li>
-                            <li class="current"><em>User Details</em></li>
+                            <li className="current"><em>User Details</em></li>
                         </ol>
                     </nav>
                 </div>
@@ -206,115 +196,61 @@ const UserDetails = () => {
                                 <div className={toggle === 1 ? "tab-pane active" : "tab-pane"} id="stockoptions">
                                     <div className="stockoptions-header">
                                         <div className="mr-auto">
-                                            <h4 className="heading-title">Stock list</h4>
+                                            {/* <h4 className="heading-title">Portfolio Stocks</h4> */}
                                         </div>
                                         <div className="stockoptions-filter wd70">
                                             <div className="row g-2">
-                                                <div className="col-md-3">
-                                                    <div className="search-form-group">
-                                                        <input type="text" name="name" onChange={(e) => handleFilter(e)} className="form-control" placeholder="Search..." style={{ color: "#000", height: "39.5px" }} />
-                                                        <span className="search-icon"><i className="la la-search"></i></span>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-3">
-                                                    <div className="form-group">
-                                                        <input type="date" className="form-control" name="start_date" onChange={(e) => handleFilter(e)} />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-3">
-                                                    <div className="form-group">
-                                                        <input type="date" className="form-control" name="end_date" onChange={(e) => handleFilter(e)} />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-3">
-                                                    <div className="form-group">
-                                                        <select className="form-control" name='order_type' onChange={(e) => handleFilter(e)} style={{ height: "39.5px" }}>
-                                                            <option value="">All</option>
-                                                            <option value="sell">Sell</option>
-                                                            <option value="buy">Buy</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="stockoptions-content-list">
-                                        <div className="row">
 
-                                            {
-                                                userOrder.length !== 0 ?
-                                                    (
-                                                        userOrder.map((ele, indx) => {
-                                                            return (
-                                                                <div key={indx} className="col-md-6">
-                                                                    <div className="stockoptions-item" onClick={(e) => { e.preventDefault(); navigate(`/user/order-details/${encode(ele.id)}`) }}>
-                                                                        <div className="stockoptions-head">
-                                                                            <div className={ele.type === 'buy' ? "byusell-option buy-opt" : "byusell-option sell-opt"}>{ele.type === 'buy' ? "Buy" : "Sell"}</div>
-                                                                            {/* <div className="stockoptions-msg-text">{ele.statusText}</div> */}
-                                                                        </div>
-                                                                        <div className="stockoptions-body">
-                                                                            <div className="shares-comp-info">
-                                                                                <div className="shares-comp-image">
-                                                                                    <img src={one} alt="not-found" />
-                                                                                </div>
-                                                                                <div className="shares-comp-content">
-                                                                                    <div className="shares-comp-name text-capitalize">{`${ele.name ?? ''} (${ele.symbol})`}</div>
-                                                                                    <div className="shares-value">{ele.quantity ?? 0} Shares</div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="stockoptions-foot">
-                                                                            <div className="stockoptions-up-down">
-                                                                                <div className="stockup">Total Cost : ${parseFloat(ele.total_cost ?? 0).toFixed(2)}</div>
-                                                                                <div className="stockdown">Buying Cost : ${parseFloat(ele.value ?? 0).toFixed(2)}</div>
-                                                                            </div>
-                                                                            <div className="stockoptions-date">{moment(ele.created_date).format('MMMM Do YYYY, hh:mm A')}</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        })
-                                                    )
-                                                    :
-                                                    (
-                                                        <div className="col-md-12 text-center mt-4 mt-5">
-                                                            <p>No stocks found</p>
-                                                        </div>
-                                                    )
-                                            }
+                                        <div className="user-table-card">
+                                            <div className="table-responsive">
+                                                <table className="table table-users">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.No</th>
+                                                            <th>Name</th>
+                                                            <th>Symbol</th>
+                                                            <th>Total price</th>
+                                                            <th>Current Price</th>
+                                                            <th>Quantity</th>
+                                                        </tr>
+                                                    </thead>
 
-                                        </div>
+                                                    <tbody>
 
-                                        {
-                                            userOrder.length !== 0 ?
-                                                (
-                                                    <div className="cactus-table-pagination">
-                                                        <ul className="cactus-pagination">
-                                                            {pageNum !== 1 && <li className="disabled" id="example_previous" onClick={() => setPageNum(pageNum - 1)}>
-                                                                <a href="#" aria-controls="example" data-dt-idx="0" tabIndex="0" className="page-link">Previous</a>
-                                                            </li>}
-
-                                                            {
-                                                                totalPageCalculator(total, LIMIT).length === 1 ? null :
-                                                                    (totalPageCalculator(total, LIMIT).map((pageNo, indx) => {
+                                                        {
+                                                            portfolio.length !== 0 ?
+                                                                (
+                                                                    portfolio.map((ele, indx) => {
                                                                         return (
-                                                                            <li className={pageNo === pageNum ? "active" : ""} key={indx} onClick={() => setPageNum(pageNo)}>
-                                                                                <a href="#" className="page-link">{pageNo}</a>
-                                                                            </li>
+                                                                            <tr key={indx}>
+                                                                                <td>{indx + 1}</td>
+                                                                                <td className='text-capitalize'>{ele.name ?? "NA"}</td>
+                                                                                <td>{ele.symbol ?? "NA"}</td>
+                                                                                <td>{parseFloat(ele.total_cost).toFixed(2) ?? 0}</td>
+                                                                                <td>{currentPrice(ele.symbol)}</td>
+                                                                                <td>{ele.quantity ?? 0}</td>
+                                                                            </tr>
                                                                         )
-                                                                    }))
-                                                            }
+                                                                    })
+                                                                )
+                                                                :
+                                                                (
+                                                                    <tr className='text-center'>
+                                                                        <td colSpan={6}>No protfolio stock found</td>
+                                                                    </tr>
+                                                                )
+                                                        }
 
-                                                            {pageNum !== Math.ceil(total / LIMIT) && <li className="next" id="example_next" onClick={() => setPageNum(pageNum + 1)}>
-                                                                <a href="#" aria-controls="example" data-dt-idx="7" tabIndex="0" className="page-link">Next</a>
-                                                            </li>}
-                                                        </ul>
-                                                    </div>
-                                                )
-                                                :
-                                                null
-                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
