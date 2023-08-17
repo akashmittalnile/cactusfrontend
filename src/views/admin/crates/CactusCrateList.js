@@ -42,7 +42,7 @@ const CactusCrateList = () => {
         const response = await ApiService.getAPIWithAccessToken(api);
         if (response.data.headers.success === 1) {
             console.log(response.data.body);
-            const filteredData = (response.data.body).filter(
+            const filteredData = (response.data.body.listing).filter(
                 (ele) => ele.id != decode(id)
             );
             console.log(filteredData);
@@ -109,7 +109,7 @@ const CactusCrateList = () => {
                                                             <img src={down} alt="not-found" />
                                                         </div> */}
                                                         <div className="createcrate-profile-text">
-                                                            <h3 className='text-capitalize'>{ele.share_id ?? "NA"}</h3>
+                                                            <h3 className='text-capitalize'>{ele.c_name ?? ""}, {ele.share_id ?? "NA"}</h3>
                                                             <h2>{ele.quantity ?? 0}</h2>
                                                         </div>
                                                     </div>

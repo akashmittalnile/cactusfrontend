@@ -233,7 +233,7 @@ const UserDetails = () => {
                                                                                 <td className='text-capitalize'>{ele.name ?? "NA"}</td>
                                                                                 <td>{ele.symbol ?? "NA"}</td>
                                                                                 <td>{parseFloat(ele.total_cost).toFixed(2) ?? 0}</td>
-                                                                                <td>{currentPrice(ele.symbol)}</td>
+                                                                                <td>{parseFloat(currentPrice(ele.symbol)).toFixed(2)}</td>
                                                                                 <td>{ele.quantity ?? 0}</td>
                                                                             </tr>
                                                                         )

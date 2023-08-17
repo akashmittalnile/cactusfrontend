@@ -97,7 +97,7 @@ const AdminSidebar = () => {
                             <NavItem className="nav-item">
                                 <Link className="nav-link" to="" onClick={signOut}>
                                     <span className="menu-icon"><img src={logoutimg} alt="logout"/></span>
-                                    <span className="menu-title">logout</span>
+                                    <span className="menu-title">Logout</span>
                                 </Link>
                             </NavItem>
                         </ul>
