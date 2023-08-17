@@ -155,7 +155,8 @@ const EditCactusCrates = () => {
         setLoading(true);
         const data = {
             "crate_id": decode(id),
-            "share_id": newCount[0].stock,
+            "share_id": newCount[0].symbol,
+            "name": newCount[0].name,
             "quantity": newCount[0].quantity,
             "status": 1
         }
@@ -188,6 +189,8 @@ const EditCactusCrates = () => {
         list[index]['stock'] = value;
         list[index]['symbol'] = splitVal[splitVal.length - 1];
         list[index]['price'] = twelevePrice(splitVal[splitVal.length-1]);
+        let charIndex = value.indexOf(splitVal[splitVal.length - 1]);
+        list[index]['name'] = value.substring(0, charIndex-1);
         setNewCount(list);
     }
   
@@ -284,7 +287,7 @@ const EditCactusCrates = () => {
                                             <div className="col-md-6">
                                                 <div className="form-group">
                                                     <label htmlFor='category'>Crate Stock/Share</label>
-                                                    <input required list='stocklist' onChange={(e) => handleChangeStock(e, index)} className='form-control' name='stockname' id='category' placeholder='Select Stock' defaultValue={ele.share_id} />
+                                                    <input required list='stocklist' onChange={(e) => handleChangeStock(e, index)} className='form-control' name='stockname' id='category' placeholder='Select Stock' defaultValue={ele.c_name + ',' + ele.share_id} />
                                                     <datalist id='stocklist'>
                                                         {
                                                             stockList.map((ele, indx) => {
