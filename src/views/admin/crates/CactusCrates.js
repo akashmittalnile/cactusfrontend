@@ -51,7 +51,7 @@ const CactusCrates = () => {
     const handleFilter = (e) => {
         let name = ""
         if (e.target.name === 'name') name = e.target.value;
-        getAllCrates(api.AllCrate + `?name=${name}`);
+        getAllCrates(api.AllCrate + `?name=${name}&page=${pageNum}&limit=${LIMIT}`);
     }
 
     useEffect(() => {

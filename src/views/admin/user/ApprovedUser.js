@@ -10,12 +10,17 @@ import { toast } from 'react-hot-toast';
 import { Modal, ModalBody } from "reactstrap";
 import deleteImg from "../../../assets/images/admin/delete-news.svg";
 import john from "../../../assets/images/admin/john-doe.png";
+import { totalPageCalculator } from '../../../utils/status.utils';
+
+const LIMIT = 5;
 
 const ApprovedUser = () => {
 
     const [users, setUser] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isDelete, setDelete] = useState({ status: false, id: "", statusNumber: "" });
+    const [total, setTotal] = useState(0);
+    const [pageNum, setPageNum] = useState(1);
 
     const handleChangeStatus = async (id, status) => {
         setLoading(true);
@@ -23,7 +28,7 @@ const ApprovedUser = () => {
             status
         };
         const response = await ApiService.putAPIWithAccessToken(api.UserStatusChange + `${id}`, data);
-        if (response.data.headers.success === 1) { toast.success('Status changed!'); getUserList(api.AllUser + `?status=1`); }
+        if (response.data.headers.success === 1) { toast.success('Status changed!'); getUserList(api.AllUser + `?status=1&page=${pageNum}&limit=${LIMIT}`); }
         setDelete({ status: false, id: "", statusNumber: "" });
         setLoading(false);
     }
@@ -31,8 +36,11 @@ const ApprovedUser = () => {
     const getUserList = async (api) => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
-        console.log("approved users list => ", response.data.body);
-        if (response.data.headers.success === 1) setUser(response.data.body);
+        console.log("approve users list => ", response.data.body);
+        if (response.data.headers.success === 1) {
+            setUser(response.data.body.listing);
+            setTotal(response.data.body.totalCount);
+        }
         else setUser([]);
         setLoading(false);
     }
@@ -43,13 +51,13 @@ const ApprovedUser = () => {
         let email = "";
         if (e.target.name === 'name') name = e.target.value;
         if (e.target.name === 'email') email = e.target.value;
-        getUserList(api.AllUser + `?status=1&name=${name}&email=${email}`);
+        getUserList(api.AllUser + `?status=1&name=${name}&email=${email}&page=${pageNum}&limit=${LIMIT}`);
     }
 
     useEffect(() => {
-        getUserList(api.AllUser + `?status=1`);
+        getUserList(api.AllUser + `?status=1&page=${pageNum}&limit=${LIMIT}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [pageNum]);
 
     return (
         <>
@@ -180,6 +188,35 @@ const ApprovedUser = () => {
 
                                 </tbody>
                             </table>
+                            {
+                                users.length !== 0 ?
+                                    (
+                                        <div className="cactus-table-pagination">
+                                            <ul className="cactus-pagination">
+                                                {pageNum !== 1 && <li className="disabled" id="example_previous" onClick={() => setPageNum(pageNum - 1)}>
+                                                    <Link to="" aria-controls="example" data-dt-idx="0" tabIndex="0" className="page-link">Previous</Link>
+                                                </li>}
+
+                                                {
+                                                    totalPageCalculator(total, LIMIT).length === 1 ? null :
+                                                        (totalPageCalculator(total, LIMIT).map((pageNo, indx) => {
+                                                            return (
+                                                                <li className={pageNo === pageNum ? "active" : ""} key={indx} onClick={() => setPageNum(pageNo)}>
+                                                                    <Link to="" className="page-link">{pageNo}</Link>
+                                                                </li>
+                                                            )
+                                                        }))
+                                                }
+
+                                                {pageNum !== Math.ceil(total / LIMIT) && <li className="next" id="example_next" onClick={() => setPageNum(pageNum + 1)}>
+                                                    <Link to="" aria-controls="example" data-dt-idx="7" tabIndex="0" className="page-link">Next</Link>
+                                                </li>}
+                                            </ul>
+                                        </div>
+                                    )
+                                    :
+                                    null
+                            }
                         </div>
                         {/* <div className="cactus-table-pagination">
                             <ul className="cactus-pagination">

@@ -34,7 +34,7 @@ const EditCactusCrates = () => {
         console.log("Crate details => ", response.data.body);
         if (response.data.headers.success === 1) {
             setCrates(response.data.body);
-            if(response.data.body.media && response.data.body.media !== undefined && response.data.body.media !== ""){
+            if (response.data.body.media && response.data.body.media !== undefined && response.data.body.media !== "") {
                 setImage(response.data.body.media);
             }
         }
@@ -55,7 +55,7 @@ const EditCactusCrates = () => {
             //     element.twelve = twelevePrice(element.share_id);
             // });
             setCount(response.data.body);
-        }else setCount([]);
+        } else setCount([]);
         setLoading(false);
     }
 
@@ -167,7 +167,7 @@ const EditCactusCrates = () => {
             getCrateDetails(api.CrateDetails + `${decode(id)}`);
         }
         resetForm();
-        setAdd({status: false});
+        setAdd({ status: false });
         setLoading(false);
     }
 
@@ -178,7 +178,7 @@ const EditCactusCrates = () => {
         list[index]['share_id'] = value;
         list[index]['symbol'] = splitVal[splitVal.length - 1];
         let charIndex = value.indexOf(splitVal[splitVal.length - 1]);
-        list[index]['name'] = value.substring(0, charIndex-1);
+        list[index]['name'] = value.substring(0, charIndex - 1);
         setCount(list);
     }
 
@@ -188,12 +188,12 @@ const EditCactusCrates = () => {
         const list = [...newCount];
         list[index]['stock'] = value;
         list[index]['symbol'] = splitVal[splitVal.length - 1];
-        list[index]['price'] = twelevePrice(splitVal[splitVal.length-1]);
+        list[index]['price'] = twelevePrice(splitVal[splitVal.length - 1]);
         let charIndex = value.indexOf(splitVal[splitVal.length - 1]);
-        list[index]['name'] = value.substring(0, charIndex-1);
+        list[index]['name'] = value.substring(0, charIndex - 1);
         setNewCount(list);
     }
-  
+
     const handleChangeQuantity = (e, index) => {
         const { value } = e.target;
         const list = [...count];
@@ -211,7 +211,7 @@ const EditCactusCrates = () => {
     useEffect(() => {
         getCrateDetails(api.CrateDetails + `${decode(id)}`);
         getStockList(api.TwelveDataStock + '?exchange=NASDAQ&country=usa');
-        getCrateShareDetails(api.CrateShareDetails +  + `${decode(id)}`);
+        getCrateShareDetails(api.CrateShareDetails + + `${decode(id)}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -284,7 +284,7 @@ const EditCactusCrates = () => {
                                 count.map((ele, index) => {
                                     return (
                                         <div key={index} className="row">
-                                            <div className="col-md-6">
+                                            <div className="col-md-5">
                                                 <div className="form-group">
                                                     <label htmlFor='category'>Crate Stock/Share</label>
                                                     <input required list='stocklist' onChange={(e) => handleChangeStock(e, index)} className='form-control' name='stockname' id='category' placeholder='Select Stock' defaultValue={ele.c_name + ',' + ele.share_id} />
@@ -302,11 +302,21 @@ const EditCactusCrates = () => {
 
                                             <input type="hidden" name="cs_id" value={ele.crate_share_id} />
 
-                                            <div className="col-md-5">
+                                            <div className="col-md-4">
                                                 <div className="form-group">
                                                     <label>Stock/Share Quantity</label>
                                                     <input required type="number" onChange={(e) => handleChangeQuantity(e, index)} className="form-control" name="stockquantity" placeholder='Quantity' value={ele.quantity} />
                                                 </div>
+                                            </div>
+
+                                            <div className="col-md-2">
+                                                {/* <div className='row mt-4'>
+                                                    {
+                                                        (ele.quantity !== "" && ele.quantity !== undefined && ele.stock !== "" && ele.stock !== undefined) && (
+                                                            parseFloat(ele.quantity).toFixed(1) + ' X ' + parseFloat(curEle.price).toFixed(1) + ' = ' + parseFloat(curEle.price * curEle.quantity).toFixed(2)
+                                                        )
+                                                    }
+                                                </div> */}
                                             </div>
 
                                             <div className="col-md-1 mt-4">
@@ -364,7 +374,7 @@ const EditCactusCrates = () => {
 
                                 <div className="col-md-12">
                                     <div className="form-group">
-                                        <button type="button" onClick={()=>navigate(-1)} className="Cancel-btn">Cancel</button>
+                                        <button type="button" onClick={() => navigate(-1)} className="Cancel-btn">Cancel</button>
                                         <button type="submit" className="Create-btn mx-2">Update</button>
                                     </div>
                                 </div>
@@ -402,13 +412,13 @@ const EditCactusCrates = () => {
             </Modal>
 
 
-            <Modal isOpen={add.status} toggle={() => { setAdd({ status: false }); setNewCount([{stock: "", quantity: "", price: 0, symbol: "", name: ""}]); }} className="njmep-modal">
+            <Modal isOpen={add.status} toggle={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: "", price: 0, symbol: "", name: "" }]); }} className="njmep-modal">
                 <div className="modal-content">
                     <ModalBody className='modal-body'>
                         <div className="deletenews-form-info">
                             <button
                                 type="button"
-                                onClick={() => { setAdd({ status: false }); setNewCount([{stock: "", quantity: "", price: 0, symbol: "", name: ""}]); }}
+                                onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: "", price: 0, symbol: "", name: "" }]); }}
                                 className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
@@ -442,17 +452,17 @@ const EditCactusCrates = () => {
                                             </div>
                                             <div className='col-md-12 my-3'>
                                                 {
-                                                    (newCount[0].quantity && newCount[0].stock) ? 
-                                                    (
-                                                        parseFloat(newCount[0].quantity).toFixed(1) + ' X ' + parseFloat(newCount[0].price).toFixed(1) + ' = ' + parseFloat(newCount[0].quantity*newCount[0].price).toFixed(2)
-                                                    )
-                                                    :
-                                                    null
+                                                    (newCount[0].quantity && newCount[0].stock) ?
+                                                        (
+                                                            parseFloat(newCount[0].quantity).toFixed(1) + ' X ' + parseFloat(newCount[0].price).toFixed(1) + ' = ' + parseFloat(newCount[0].quantity * newCount[0].price).toFixed(2)
+                                                        )
+                                                        :
+                                                        null
                                                 }
                                             </div>
                                             <div className="col-md-12">
                                                 <div className="form-group">
-                                                    <button onClick={() => { setAdd({ status: false }); setNewCount([{stock: "", quantity: "", price: 0, symbol: "", name: ""}]); }} type="button" className="Cancel-btn">Cancel</button>
+                                                    <button onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: "", price: 0, symbol: "", name: "" }]); }} type="button" className="Cancel-btn">Cancel</button>
                                                     <button type="submit" className="Create-btn mx-2">Add</button>
                                                 </div>
                                             </div>

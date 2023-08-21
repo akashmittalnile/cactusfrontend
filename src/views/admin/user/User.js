@@ -10,17 +10,25 @@ import moment from 'moment';
 import { userStatus, approvalStatus } from '../../../utils/status.utils';
 import { toast } from 'react-hot-toast';
 import john from "../../../assets/images/admin/john-doe.png";
+import { totalPageCalculator } from '../../../utils/status.utils';
+
+const LIMIT = 5;
 
 const User = () => {
 
     const [users, setUser] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [total, setTotal] = useState(0);
+    const [pageNum, setPageNum] = useState(1);
 
     const getUserList = async (api) => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         console.log("all users list => ", response.data.body);
-        if (response.data.headers.success === 1) setUser(response.data.body);
+        if (response.data.headers.success === 1) {
+            setUser(response.data.body.listing);
+            setTotal(response.data.body.totalCount);
+        }
         else setUser([]);
         setLoading(false);
     }
@@ -32,7 +40,7 @@ const User = () => {
         };
         console.log(data, status_number);
         const response = await ApiService.putAPIWithAccessToken(api.UserStatusChange + `${id}`, data);
-        if (response.data.headers.success === 1) { toast.success('Status changed!'); getUserList(api.AllUser); }
+        if (response.data.headers.success === 1) { toast.success('Status changed!'); getUserList(api.AllUser + `?page=${pageNum}&limit=${LIMIT}`); }
         setLoading(false);
     }
 
@@ -44,13 +52,13 @@ const User = () => {
         if (e.target.name === 'name') name = e.target.value;
         if (e.target.name === 'status') status = e.target.value;
         if (e.target.name === 'email') email = e.target.value;
-        getUserList(api.AllUser + `?name=${name}&status=${status}&email=${email}`);
+        getUserList(api.AllUser + `?name=${name}&status=${status}&email=${email}&page=${pageNum}&limit=${LIMIT}`);
     }
 
     useEffect(() => {
-        getUserList(api.AllUser);
+        getUserList(api.AllUser + `?page=${pageNum}&limit=${LIMIT}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [pageNum]);
 
     return (
         <>
@@ -66,12 +74,12 @@ const User = () => {
                                 <div className="row g-2">
                                     <div className="col-md-3">
                                         <div className="form-group">
-                                            <Link style={{height: "44.5px"}} className="Approve-User-btn" to="/approved-user-profile"><i className="las la-check-circle"></i> Approve User Profile</Link>
+                                            <Link style={{ height: "44.5px" }} className="Approve-User-btn" to="/approved-user-profile"><i className="las la-check-circle"></i> Approve User Profile</Link>
                                         </div>
                                     </div>
                                     <div className="col-md-3">
                                         <div className="form-group">
-                                            <select className="form-control" name="status" onChange={(e) => handleFilter(e)} style={{height:"44.5px"}}>
+                                            <select className="form-control" name="status" onChange={(e) => handleFilter(e)} style={{ height: "44.5px" }}>
                                                 <option value="">Show All Users</option>
                                                 <option value="2">Active Users</option>
                                                 <option value="3">Inactive Users</option>
@@ -216,8 +224,39 @@ const User = () => {
                                             )
                                     }
 
+
+
                                 </tbody>
                             </table>
+                            {
+                                users.length !== 0 ?
+                                    (
+                                        <div className="cactus-table-pagination">
+                                            <ul className="cactus-pagination">
+                                                {pageNum !== 1 && <li className="disabled" id="example_previous" onClick={() => setPageNum(pageNum - 1)}>
+                                                    <Link to="" aria-controls="example" data-dt-idx="0" tabIndex="0" className="page-link">Previous</Link>
+                                                </li>}
+
+                                                {
+                                                    totalPageCalculator(total, LIMIT).length === 1 ? null :
+                                                        (totalPageCalculator(total, LIMIT).map((pageNo, indx) => {
+                                                            return (
+                                                                <li className={pageNo === pageNum ? "active" : ""} key={indx} onClick={() => setPageNum(pageNo)}>
+                                                                    <Link to="" className="page-link">{pageNo}</Link>
+                                                                </li>
+                                                            )
+                                                        }))
+                                                }
+
+                                                {pageNum !== Math.ceil(total / LIMIT) && <li className="next" id="example_next" onClick={() => setPageNum(pageNum + 1)}>
+                                                    <Link to="" aria-controls="example" data-dt-idx="7" tabIndex="0" className="page-link">Next</Link>
+                                                </li>}
+                                            </ul>
+                                        </div>
+                                    )
+                                    :
+                                    null
+                            }
                         </div>
                         {/* <div className="cactus-table-pagination">
                             <ul className="cactus-pagination">

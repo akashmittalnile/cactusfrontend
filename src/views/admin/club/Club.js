@@ -58,7 +58,7 @@ const Club = () => {
         if (e.target.name === 'name') name = e.target.value;
         if (e.target.name === 'status') status = e.target.value;
         if (e.target.name === 'created_by') created_by = e.target.value;
-        getUserList(api.AllUserClub + `?name=${name}&status=${status}&created_by=${created_by}`);
+        getUserList(api.AllUserClub + `?name=${name}&status=${status}&created_by=${created_by}&page=${pageNum1}&limit=${LIMIT}`);
     }
 
     const handleFilterManager = (e) => {
@@ -69,16 +69,16 @@ const Club = () => {
         if (e.target.name === 'name') name = e.target.value;
         if (e.target.name === 'status') status = e.target.value;
         if (e.target.name === 'created_by') created_by = e.target.value;
-        getManagerList(api.AllManagerClub + `?name=${name}&status=${status}&created_by=${created_by}`);
+        getManagerList(api.AllManagerClub + `?name=${name}&status=${status}&created_by=${created_by}&page=${pageNum2}&limit=${LIMIT}`);
     }
 
     const getUserManagerNameList = async () => {
         setLoading(true);
         const response1 = await ApiService.getAPIWithAccessToken(api.AllUser);
-        if (response1.data.headers.success === 1) setUser(response1.data.body);
+        if (response1.data.headers.success === 1) setUser(response1.data.body.listing);
         else setUser([]);
         const response2 = await ApiService.getAPIWithAccessToken(api.AllManager);
-        if (response2.data.headers.success === 1) setManager(response2.data.body);
+        if (response2.data.headers.success === 1) setManager(response2.data.body.listing);
         else setManager([]);
         setLoading(false);
     }

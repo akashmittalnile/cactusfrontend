@@ -159,7 +159,7 @@ const ClubDetails = () => {
                                                         <div className="club-comp-text">
                                                             <h3>{ele.name ?? ""} ({ele.symbol ?? ""})</h3>
                                                             <p><b style={{ color: "#000" }}>Total Price : </b>{parseFloat(ele.total_price ?? 0).toFixed(2)}</p>
-                                                            <p><b style={{ color: "#000" }}>Current Price : </b>{(ele.twelve)}</p>
+                                                            <p><b style={{ color: "#000" }}>Current Price : </b>{parseFloat(ele.twelve).toFixed(2)}</p>
                                                         </div>
                                                     </div>
                                                     <div className="shares-value-text text-capitalize">Quantity : {ele.quantity ?? 0}</div>

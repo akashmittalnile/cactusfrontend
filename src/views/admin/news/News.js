@@ -39,7 +39,7 @@ const News = () => {
         if (response.data.headers.success === 1) {
             toast.success("News delete successfully!");
         }
-        getNewsList(api.AllNews);
+        getNewsList(api.AllNews + `&page=${pageNum}&limit=${LIMIT}`);
         setTrash({ status: false, id: null });
         setLoading(false);
     }
@@ -49,7 +49,7 @@ const News = () => {
         let status = ""
         if (e.target.name === 'title') title = e.target.value;
         if (e.target.name === 'status') status = e.target.value;
-        getNewsList(api.AllNews + `&title=${title}&status=${status}`);
+        getNewsList(api.AllNews + `&title=${title}&status=${status}&page=${pageNum}&limit=${LIMIT}`);
     }
 
     useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "../../../assets/admin/css/dasboard.css";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, Area, PieChart, Pie, Label, Cell } from 'recharts';
 import ApiService from '../../../core/services/ApiService';
 import user from "../../../assets/images/admin/user-large.svg";
 import manage from "../../../assets/images/admin/manager-large.svg";
@@ -65,7 +65,9 @@ const data = [
         amt: 1100,
     },
 ];
-const data1 = [{ amt: 10 }, { amt: 80 }, { amt: 200 }, { amt: 80 }, { amt: 200 }, { amt: 240 }, { amt: 180 }, { amt: 230 }, { amt: 50 }, { amt: 250 }];
+const data01 = [{ name: 'Group A', value: 5, color: "Green" }, { name: 'Group B', value: 4, color: "Red" },
+{ name: 'Group C', value: 1, color: "Blue" }, { name: 'Group D', value: 1, color: "yellow" }];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const Dashboard = () => {
 
@@ -94,7 +96,7 @@ const Dashboard = () => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         // console.log("approved users list => ", response.data.body);
-        if (response.data.headers.success === 1) setUser(response.data.body);
+        if (response.data.headers.success === 1) setUser(response.data.body.listing);
         else setUser([]);
         setLoading(false);
     }
@@ -102,8 +104,8 @@ const Dashboard = () => {
     const getManagerList = async (api) => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
-        console.log("all managers list => ", response.data.body);
-        if (response.data.headers.success === 1) setManager(response.data.body);
+        // console.log("all managers list => ", response.data.body);
+        if (response.data.headers.success === 1) setManager(response.data.body.listing);
         else setManager([]);
         setLoading(false);
     }
@@ -534,28 +536,84 @@ const Dashboard = () => {
 
                 <div className="user-content-section mt-4">
                     <div className="user-table-card">
-                        <LineChart
-                            width={1170}
-                            height={360}
-                            data={data}
-                            margin={{
-                                top: 5,
-                                right: 30,
-                                left: 20,
-                                bottom: 5,
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="0 0" />
+                        <AreaChart width={1200} height={250} data={data}
+                            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                            <defs>
+                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#ffc107" stopOpacity={0.8} />
+                                    <stop offset="95%" stopColor="#ffc107" stopOpacity={0} />
+                                </linearGradient>
+                                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#00EE57" stopOpacity={0.8} />
+                                    <stop offset="95%" stopColor="#00EE57" stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
                             <XAxis dataKey="name" />
                             <YAxis />
+                            <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip />
-                            <Legend />
-                            <Line type="monotone" dataKey="pv" stroke="#8884d8" strokeWidth={3} />
-                            <Line type="monotone" dataKey="uv" stroke="#82ca9d" strokeWidth={3} />
-                            <Line type="monotone" dataKey="amt" stroke="#ff0a32" strokeWidth={3} />
-                        </LineChart>
+                            <Area type="monotone" dataKey="uv" stroke="#ffc107" fillOpacity={1} fill="url(#colorUv)" />
+                            <Area type="monotone" dataKey="pv" stroke="#00EE57" fillOpacity={1} fill="url(#colorPv)" />
+                        </AreaChart>
                     </div>
                 </div>
+
+                <div className="row">
+                    <div className="user-content-section mt-4 w-50">
+                        <div className="user-table-card">
+                            <PieChart width={500} height={300}>
+                                <Pie
+                                    data={data01}
+                                    cx={300}
+                                    cy={150}
+                                    innerRadius={60}
+                                    outerRadius={85}
+                                    fill="#8884d8"
+                                    paddingAngle={2}
+                                >
+                                    {/* <Label
+                                        value="6" position="centerBottom" className='label-top' fontSize='27px'
+                                    />
+                                    <Label
+                                        value="tasks left" position="centerTop" className='label'
+                                    /> */}
+                                    {
+                                        data01.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />)
+                                    }
+                                </Pie>
+                                <Tooltip />
+                            </PieChart>
+                        </div>
+                    </div>
+
+                    <div className="user-content-section mt-4 w-50">
+                        <div className="user-table-card">
+                            <PieChart width={500} height={300}>
+                                <Pie
+                                    data={data01}
+                                    cx={300}
+                                    cy={150}
+                                    innerRadius={60}
+                                    outerRadius={85}
+                                    fill="#8884d8"
+                                    paddingAngle={2}
+                                >
+                                    {/* <Label
+                                        value="6" position="centerBottom" className='label-top' fontSize='27px'
+                                    />
+                                    <Label
+                                        value="tasks left" position="centerTop" className='label'
+                                    /> */}
+                                    {
+                                        data01.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />)
+                                    }
+                                </Pie>
+                                <Tooltip />
+                            </PieChart>
+                        </div>
+                    </div>
+                </div>
+
 
 
                 <Modal isOpen={isDelete.status} toggle={() => { setDelete({ status: false, id: "", statusNumber: "", title: "" }); }} className="njmep-modal">

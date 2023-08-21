@@ -40,7 +40,7 @@ const Pages = () => {
         if (response.data.headers.success === 1) {
             toast.success("Page delete successfully!");
         }
-        getPagesList(api.GetAllPages);
+        getPagesList(api.GetAllPages + `&page=${pageNum}&limit=${LIMIT}`);
         setTrash({ status: false, id: null });
         setLoading(false);
     }
@@ -48,7 +48,7 @@ const Pages = () => {
     const handleFilter = (e) => {
         let slug = ""
         if (e.target.name === 'slug') slug = e.target.value;
-        getPagesList(api.GetAllPages + `&slug=${slug}`);
+        getPagesList(api.GetAllPages + `&slug=${slug}&page=${pageNum}&limit=${LIMIT}`);
     }
 
     useEffect(() => {

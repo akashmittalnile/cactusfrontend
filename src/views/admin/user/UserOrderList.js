@@ -44,7 +44,7 @@ const UserOrderList = () => {
         if (e.target.name === 'start_date') start_date = e.target.value;
         if (e.target.name === 'end_date') end_date = e.target.value;
         if (e.target.name === 'order_type') order_type = e.target.value;
-        orderList(api.UserOrderList + `${decode(userId)}?name=${name}&start_date=${start_date}&end_date=${end_date}&order_type=${order_type}`);
+        orderList(api.UserOrderList + `${decode(userId)}?name=${name}&start_date=${start_date}&end_date=${end_date}&order_type=${order_type}&page=${pageNum}&limit=${LIMIT}`);
     }
 
     useEffect(() => {
