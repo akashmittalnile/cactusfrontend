@@ -1,6 +1,7 @@
 exports.api = {
     login: `auth/admin/login`,
     Dashboard: `admin/dashboard`,
+    UserManagerGraphData: `admin/user/dashboard`,
     AllUser: `admin/users`,
     UserDetails: `admin/user/id/`,
     UserOrderList: `admin/user/orders/id/`,

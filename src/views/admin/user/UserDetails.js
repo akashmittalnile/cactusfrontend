@@ -13,6 +13,7 @@ import one from "../../../assets/images/admin/1.png";
 // import two from "../../assets/images/admin/2.png";
 // import three from "../../assets/images/admin/3.png";
 // import four from "../../assets/images/admin/4.jpg";
+import iobj from "../../../assets/images/admin/investmentobjectives.svg";
 import eth from "../../../assets/images/admin/eth.svg";
 import usdt from "../../../assets/images/admin/usdt.svg";
 import bch from "../../../assets/images/admin/bch.svg";
@@ -24,6 +25,8 @@ import moment from 'moment';
 import { api } from '../../../utils/api.utils';
 import { encode } from 'base-64';
 import { userStatus } from '../../../utils/status.utils';
+import credit from "../../../assets/images/admin/credit.svg";
+import debit from "../../../assets/images/admin/debit.svg";
 
 
 const UserDetails = () => {
@@ -36,6 +39,7 @@ const UserDetails = () => {
     const [portfolio, setPortfolio] = useState([]);
     const [listing, setListing] = useState([]);
     const [details, setDetails] = useState({});
+    const [creditDebit, setCreditDebit] = useState({ total_credit: 0, user_club_credit: 0, manager_club_credit: 0, total_debit: 0, user_club_debit: 0, manager_club_debit: 0 });
 
 
     const portfolioList = async (api) => {
@@ -79,9 +83,31 @@ const UserDetails = () => {
         clubList(api.UserClubList + `${decode(userId)}?name=${name}&status=${status}`);
     }
 
+    const graphData = async (api) => {
+        setLoading(true);
+        const response = await ApiService.getAPIWithAccessToken(api);
+        console.log("user graph data => ", response.data.body);
+        if (response.data.headers.success === 1) {
+            let total_credit = 0, total_debit = 0, user_total_debit = 0, user_total_credit = 0, manager_total_debit = 0, manager_total_credit = 0;
+            if(response.data.body.length > 0){
+                (response.data.body).map((ele) => {
+                    total_debit += ele.total_debit;
+                    total_credit += ele.total_credit;
+                    user_total_credit += ele.User_club_total_credit;
+                    user_total_debit += ele.User_club_total_debit;
+                    manager_total_credit += ele.manager_club_total_credit;
+                    manager_total_debit += ele.manager_club_total_debit;
+                });
+            }
+            setCreditDebit({ total_credit: total_credit, user_club_credit: user_total_credit, manager_club_credit: manager_total_credit, total_debit: total_debit, user_club_debit: user_total_debit, manager_club_debit: manager_total_debit });
+        }
+        setLoading(false);
+    }
+
     useEffect(() => {
         userDetails(api.UserDetails + `${decode(userId)}`);
         clubList(api.UserClubList + `${decode(userId)}`);
+        graphData(api.UserManagerGraphData + `?added_by=${decode(userId)}`);
         portfolioList(api.Portfolio + `${decode(userId)}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toggle]);
@@ -182,6 +208,82 @@ const UserDetails = () => {
                         </div>
                     </div>
 
+                    <div className="manager-overview-section">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="manager-overview-card">
+                                    <div className="manager-overview-card-content">
+                                        <p>Total credit amount</p>
+                                        <h3>{creditDebit.total_credit ?? 0}</h3>
+                                    </div>
+                                    <div className="manager-overview-card-icon">
+                                        <img src={credit} alt="not-found" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-md-6">
+                                <div className="manager-overview-card">
+                                    <div className="manager-overview-card-content">
+                                        <p>Total debit amount</p>
+                                        <h3>{creditDebit.total_debit ?? 0}</h3>
+                                    </div>
+                                    <div className="manager-overview-card-icon">
+                                        <img src={debit} alt="not-found" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-md-3">
+                                <div className="manager-overview-card">
+                                    <div className="manager-overview-card-content">
+                                        <p>Total credit amount in cactus clubs</p>
+                                        <h3>{creditDebit.user_club_credit ?? 0}</h3>
+                                    </div>
+                                    <div className="manager-overview-card-icon">
+                                        <img src={credit} alt="not-found" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-md-3">
+                                <div className="manager-overview-card">
+                                    <div className="manager-overview-card-content">
+                                        <p>Total debit amount in cactus clubs</p>
+                                        <h3>{creditDebit.user_club_debit ?? 0}</h3>
+                                    </div>
+                                    <div className="manager-overview-card-icon">
+                                        <img src={debit} alt="not-found" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-md-3">
+                                <div className="manager-overview-card">
+                                    <div className="manager-overview-card-content">
+                                        <p>Total credit amount in manager clubs</p>
+                                        <h3>{creditDebit.manager_club_credit ?? 0}</h3>
+                                    </div>
+                                    <div className="manager-overview-card-icon">
+                                        <img src={credit} alt="not-found" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-md-3">
+                                <div className="manager-overview-card">
+                                    <div className="manager-overview-card-content">
+                                        <p>Total debit amount in manager clubs</p>
+                                        <h3>{creditDebit.manager_club_debit ?? 0}</h3>
+                                    </div>
+                                    <div className="manager-overview-card-icon">
+                                        <img src={debit} alt="not-found" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="user-details-content-section">
                         <div className="my-order-section">
                             <div className="my-order-tabs">
@@ -200,7 +302,7 @@ const UserDetails = () => {
                                         </div>
                                         <div className="stockoptions-filter wd70">
                                             <div className="row g-2">
-                                                
+
                                             </div>
                                         </div>
                                     </div>

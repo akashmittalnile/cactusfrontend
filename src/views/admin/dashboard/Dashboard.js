@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "../../../assets/admin/css/dasboard.css";
-import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, Area, PieChart, Pie, Label, Cell } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, Area, PieChart, Pie, Label, Cell, BarChart, Bar } from 'recharts';
 import ApiService from '../../../core/services/ApiService';
 import user from "../../../assets/images/admin/user-large.svg";
 import manage from "../../../assets/images/admin/manager-large.svg";
@@ -20,8 +20,11 @@ import u3 from "../../../assets/images/admin/u3.png";
 import { encode } from 'base-64';
 import john from "../../../assets/images/admin/john-doe.png";
 import john1 from "../../../assets/images/admin/john-doe1.png";
+import lsexp from "../../../assets/images/admin/leadershipexperience.svg";
+import credit from "../../../assets/images/admin/credit.svg";
+import debit from "../../../assets/images/admin/debit.svg";
 
-const data = [
+const data2 = [
     {
         name: 'Page A',
         uv: 6000,
@@ -78,6 +81,8 @@ const Dashboard = () => {
     const [userClubs, setUserClub] = useState([]);
     const [managerClubs, setManagerClub] = useState([]);
     const [isDelete, setDelete] = useState({ status: false, id: "", statusNumber: "", title: "" });
+    const [data1, setData1] = useState([]);
+    const [creditDebit, setCreditDebit] = useState({ total_credit: 0, user_club_credit: 0, manager_club_credit: 0, total_debit: 0, user_club_debit: 0, manager_club_debit: 0 });
 
     const getDashboardData = async (api) => {
         setLoading(true);
@@ -87,6 +92,19 @@ const Dashboard = () => {
             setDashboard(response.data.body);
             setUserClub(response.data.body.userClub);
             setManagerClub(response.data.body.managerClub);
+            setData1(response.data.body.graph);
+            let total_credit = 0, total_debit = 0, user_total_debit = 0, user_total_credit = 0, manager_total_debit = 0, manager_total_credit = 0;
+            if (response.data.body.graph.length > 0) {
+                (response.data.body.graph).map((ele) => {
+                    total_debit += ele.total_debit;
+                    total_credit += ele.total_credit;
+                    user_total_credit += ele.User_club_total_credit;
+                    user_total_debit += ele.User_club_total_debit;
+                    manager_total_credit += ele.manager_club_total_credit;
+                    manager_total_debit += ele.manager_club_total_debit;
+                });
+            }
+            setCreditDebit({ total_credit: total_credit, user_club_credit: user_total_credit, manager_club_credit: manager_total_credit, total_debit: total_debit, user_club_debit: user_total_debit, manager_club_debit: manager_total_debit });
         }
         else setDashboard({});
         setLoading(false);
@@ -199,6 +217,132 @@ const Dashboard = () => {
                                     <h2>{dashboard.crates}</h2>
                                 </div>
                             </Link>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="user-content-section mt-4">
+                    <div className="user-table-card">
+                        <div className='row'>
+                            <div className="col-md-6">
+                                <div className="manager-overview-card">
+                                    <div className="manager-overview-card-content">
+                                        <p>Total credit amount</p>
+                                        <h3>{creditDebit.total_credit ?? 0}</h3>
+                                    </div>
+                                    <div className="manager-overview-card-icon">
+                                        <img src={credit} alt="not-found" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="manager-overview-card">
+                                    <div className="manager-overview-card-content">
+                                        <p>Total debit amount</p>
+                                        <h3>{creditDebit.total_debit ?? 0}</h3>
+                                    </div>
+                                    <div className="manager-overview-card-icon">
+                                        <img src={debit} alt="not-found" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <AreaChart width={1200} height={250} data={data1}
+                            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                            <defs>
+                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#00EE57" stopOpacity={0.8} />
+                                    <stop offset="95%" stopColor="#00EE57" stopOpacity={0} />
+                                </linearGradient>
+                                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#ff0a32" stopOpacity={0.8} />
+                                    <stop offset="95%" stopColor="#ff0a32" stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
+                            <XAxis dataKey="month" name='Month' />
+                            <YAxis />
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <Tooltip />
+                            <Area type="monotone" name='Total Credit' dataKey="total_credit" stroke="#00EE57" fillOpacity={1} fill="url(#colorUv)" />
+                            <Area type="monotone" name='Total Debit' dataKey="total_debit" stroke="#ff0a32" fillOpacity={1} fill="url(#colorPv)" />
+                        </AreaChart>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="user-content-section mt-4 w-50">
+                        <div className="user-table-card">
+                            <div className='row'>
+                                <div className="col-md-6">
+                                    <div className="manager-overview-card">
+                                        <div className="manager-overview-card-content">
+                                            <p>Total credit amount in cactus clubs</p>
+                                            <h3>{creditDebit.user_club_credit ?? 0}</h3>
+                                        </div>
+                                        <div className="manager-overview-card-icon">
+                                            <img src={credit} alt="not-found" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="manager-overview-card">
+                                        <div className="manager-overview-card-content">
+                                            <p>Total debit amount in cactus clubs</p>
+                                            <h3>{creditDebit.user_club_debit ?? 0}</h3>
+                                        </div>
+                                        <div className="manager-overview-card-icon">
+                                            <img src={debit} alt="not-found" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <BarChart width={550} height={250} data={data1}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis  dataKey="month" name='Month' />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar name='User club total credit' dataKey="User_club_total_credit" fill="#00EE57" />
+                                <Bar name='User club total debit' dataKey="User_club_total_debit" fill="#ff0a32" />
+                            </BarChart>
+                        </div>
+                    </div>
+
+                    <div className="user-content-section mt-4 w-50">
+                        <div className="user-table-card">
+                            <div className='row'>
+                                <div className="col-md-6">
+                                    <div className="manager-overview-card">
+                                        <div className="manager-overview-card-content">
+                                            <p>Total credit amount in manager clubs</p>
+                                            <h3>{creditDebit.manager_club_credit ?? 0}</h3>
+                                        </div>
+                                        <div className="manager-overview-card-icon">
+                                            <img src={credit} alt="not-found" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="manager-overview-card">
+                                        <div className="manager-overview-card-content">
+                                            <p>Total debit amount in manager clubs</p>
+                                            <h3>{creditDebit.manager_club_debit ?? 0}</h3>
+                                        </div>
+                                        <div className="manager-overview-card-icon">
+                                            <img src={debit} alt="not-found" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <BarChart width={550} height={250} data={data1}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis  dataKey="month" name='Month' />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar name='Manager club total credit' dataKey="manager_club_total_credit" fill="#00EE57" />
+                                <Bar name='Manager club total debit' dataKey="manager_club_total_debit" fill="#ff0a32" />
+                            </BarChart>
                         </div>
                     </div>
                 </div>
@@ -532,88 +676,6 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-
-
-                <div className="user-content-section mt-4">
-                    <div className="user-table-card">
-                        <AreaChart width={1200} height={250} data={data}
-                            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                            <defs>
-                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#ffc107" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#ffc107" stopOpacity={0} />
-                                </linearGradient>
-                                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#00EE57" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#00EE57" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <Tooltip />
-                            <Area type="monotone" dataKey="uv" stroke="#ffc107" fillOpacity={1} fill="url(#colorUv)" />
-                            <Area type="monotone" dataKey="pv" stroke="#00EE57" fillOpacity={1} fill="url(#colorPv)" />
-                        </AreaChart>
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="user-content-section mt-4 w-50">
-                        <div className="user-table-card">
-                            <PieChart width={500} height={300}>
-                                <Pie
-                                    data={data01}
-                                    cx={300}
-                                    cy={150}
-                                    innerRadius={60}
-                                    outerRadius={85}
-                                    fill="#8884d8"
-                                    paddingAngle={2}
-                                >
-                                    {/* <Label
-                                        value="6" position="centerBottom" className='label-top' fontSize='27px'
-                                    />
-                                    <Label
-                                        value="tasks left" position="centerTop" className='label'
-                                    /> */}
-                                    {
-                                        data01.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />)
-                                    }
-                                </Pie>
-                                <Tooltip />
-                            </PieChart>
-                        </div>
-                    </div>
-
-                    <div className="user-content-section mt-4 w-50">
-                        <div className="user-table-card">
-                            <PieChart width={500} height={300}>
-                                <Pie
-                                    data={data01}
-                                    cx={300}
-                                    cy={150}
-                                    innerRadius={60}
-                                    outerRadius={85}
-                                    fill="#8884d8"
-                                    paddingAngle={2}
-                                >
-                                    {/* <Label
-                                        value="6" position="centerBottom" className='label-top' fontSize='27px'
-                                    />
-                                    <Label
-                                        value="tasks left" position="centerTop" className='label'
-                                    /> */}
-                                    {
-                                        data01.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} />)
-                                    }
-                                </Pie>
-                                <Tooltip />
-                            </PieChart>
-                        </div>
-                    </div>
-                </div>
-
 
 
                 <Modal isOpen={isDelete.status} toggle={() => { setDelete({ status: false, id: "", statusNumber: "", title: "" }); }} className="njmep-modal">
