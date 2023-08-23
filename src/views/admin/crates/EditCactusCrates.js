@@ -160,13 +160,14 @@ const EditCactusCrates = () => {
             "quantity": newCount[0].quantity,
             "status": 1
         }
-        console.log(data);
+        // console.log(data);
         const response = await ApiService.postAPIWithAccessToken(api.AddCrateStock, data);
         if (response.data.headers.success === 1) {
             toast.success('New stock/share added successfully!');
             getCrateDetails(api.CrateDetails + `${decode(id)}`);
         }
         resetForm();
+        getCrateShareDetails(api.CrateShareDetails + `${decode(id)}`);
         setAdd({ status: false });
         setLoading(false);
     }
@@ -211,7 +212,7 @@ const EditCactusCrates = () => {
     useEffect(() => {
         getCrateDetails(api.CrateDetails + `${decode(id)}`);
         getStockList(api.TwelveDataStock + '?exchange=NASDAQ&country=usa');
-        getCrateShareDetails(api.CrateShareDetails + + `${decode(id)}`);
+        getCrateShareDetails(api.CrateShareDetails + `${decode(id)}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

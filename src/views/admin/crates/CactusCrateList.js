@@ -37,30 +37,30 @@ const CactusCrateList = () => {
         setLoading(false);
     }
 
-    const getAllCrates = async (api) => {
+    const getAllCrates = async (api, id) => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         if (response.data.headers.success === 1) {
-            console.log(response.data.body);
+            // console.log("res => ",response.data.body.listing);
             const filteredData = (response.data.body.listing).filter(
-                (ele) => ele.id != decode(id)
+                (ele) => ele.id != id
             );
-            console.log(filteredData);
             setCrateList(filteredData);
         } else setCrateList([]);
         setLoading(false);
     }
 
     const changeCrate = (id) => {
+        navigate(`/cactus-crates-list/${encode(id)}`);
         getCrateDetails(api.CrateDetails + `${id}`);
         getStockList(api.CrateStockList + `${id}`);
-        getAllCrates(api.AllCrate);
+        getAllCrates(api.AllCrate, id);
     }
 
     useEffect(() => {
         getCrateDetails(api.CrateDetails + `${decode(id)}`);
         getStockList(api.CrateStockList + `${decode(id)}`);
-        getAllCrates(api.AllCrate);
+        getAllCrates(api.AllCrate, `${decode(id)}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

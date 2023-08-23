@@ -14,9 +14,9 @@ const TransactionStatement = () => {
     const [pageNum, setPageNum] = useState(1);
     const [loading, setLoading] = useState(false);
     const id = (JSON.parse(localStorage.getItem('cactus'))).userId;
-    const navigate = useNavigate();
 
     const getTransactionList = async (api) => {
+        console.log(api);
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         console.log("all transaction list => ", response.data.body);
@@ -28,6 +28,13 @@ const TransactionStatement = () => {
         setLoading(false);
     }
 
+    const handleFilter = (e) => {
+        e.persist();
+        let type = "";
+        if (e.target.name === 'type') type = e.target.value;
+        getTransactionList(api.TransactionStatement + `?owner_id=${id}&owner_type=admin&page=${pageNum}&limit=${LIMIT}&payment_type=${type}`);
+    }
+
     useEffect(() => {
         getTransactionList(api.TransactionStatement + `?owner_id=${id}&owner_type=admin&page=${pageNum}&limit=${LIMIT}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,13 +44,25 @@ const TransactionStatement = () => {
         <>
             {loading ? <Loader /> : null}
             <div className="user-table-section">
-                <div className="heading-section">
-                    <div className="d-flex justify-content-between align-items-center">
+            <div className="heading-section">
+                    <div className="d-flex align-items-center">
                         <div className="mr-auto">
                             <h4 className="heading-title">Admin Transaction Statement</h4>
                         </div>
-                        <div className='mx-3'>
-                            <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1); }} ><i className="las la-arrow-left"></i> Back</Link>
+                        <div className="btn-option-info wd30">
+                            <div className="search-filter">
+                                <div className="row g-2">
+                                    <div className="col-md-12">
+                                        <div className="form-group">
+                                            <select className="form-control" name="type" onChange={(e) => handleFilter(e)} style={{ height: "44.5px" }}>
+                                                <option value="">Select Type</option>
+                                                <option value="user">Individual</option>
+                                                <option value="club">Club</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
