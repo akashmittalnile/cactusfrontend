@@ -344,7 +344,7 @@ const UserDetails = () => {
                                                                 :
                                                                 (
                                                                     <tr className='text-center'>
-                                                                        <td colSpan={6}>No protfolio stock found</td>
+                                                                        <td colSpan={6}>No portfolio stock found</td>
                                                                     </tr>
                                                                 )
                                                         }

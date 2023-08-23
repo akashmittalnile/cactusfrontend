@@ -41,19 +41,11 @@ const EditCactusCrates = () => {
         setLoading(false);
     }
 
-    const twelevePrice = async (symbol) => {
-        const response = await axios.get(api.TwelveDataPrice + `?symbol=${symbol}&apikey=6b7ad9bbb1014db4baff00e7719f7689`);
-        return response.data.price ?? 0;
-    }
-
     const getCrateShareDetails = async (api) => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         console.log("Crate Share list => ", response.data.body);
         if (response.data.headers.success === 1) {
-            // (response.data.body).forEach(element => {
-            //     element.twelve = twelevePrice(element.share_id);
-            // });
             setCount(response.data.body);
         } else setCount([]);
         setLoading(false);
@@ -183,18 +175,25 @@ const EditCactusCrates = () => {
         setCount(list);
     }
 
+    const twelevePrice = async (symbol, index) => {
+        const response = await axios.get(api.TwelveDataPrice + `?symbol=${symbol}&apikey=6b7ad9bbb1014db4baff00e7719f7689`);
+        const list = [...newCount];
+        list[index]['price'] = response.data.price ?? 0;
+        setNewCount(list);
+    }
+
     const handleNewChangeStock = (e, index = 0) => {
         const { value } = e.target;
         const splitVal = value.split(",");
         const list = [...newCount];
         list[index]['stock'] = value;
         list[index]['symbol'] = splitVal[splitVal.length - 1];
-        list[index]['price'] = twelevePrice(splitVal[splitVal.length - 1]);
         let charIndex = value.indexOf(splitVal[splitVal.length - 1]);
         list[index]['name'] = value.substring(0, charIndex - 1);
         setNewCount(list);
+        twelevePrice(splitVal[splitVal.length - 1], index);
     }
-
+console.log(newCount);
     const handleChangeQuantity = (e, index) => {
         const { value } = e.target;
         const list = [...count];

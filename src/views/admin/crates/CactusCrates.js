@@ -71,7 +71,7 @@ const CactusCrates = () => {
                         <div className="row g-2">
                             <div className="col-md-6">
                                 <div className="form-group search-form-group">
-                                    <input type="text" name="name" onChange={(e) => handleFilter(e)} className="form-control" placeholder="Search..." style={{ color: "#000" }} />
+                                    <input type="text" name="name" onChange={(e) => handleFilter(e)} className="form-control" placeholder="Search..." style={{ color: "#000", height: "41.5px" }} />
                                     <span className="search-icon"><i className="la la-search"></i></span>
                                 </div>
                             </div>

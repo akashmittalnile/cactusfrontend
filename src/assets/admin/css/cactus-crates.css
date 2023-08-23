@@ -35,7 +35,7 @@ a.createcrate-btn:hover{color: #fff;}
 /* .crates-stock-up:before{background-image:url(./images/admin/up-stock.svg);background-repeat: no-repeat;background-position: center;} */
 /* .crates-stock-down:before{background-image:url(./images/admin/down-stock.svg);background-repeat: no-repeat;background-position: center;} */
 .cactuscrates-action a:hover{color: #fff;}
-.createcrate-list-item {background: #FFFFFF; box-shadow: 0px 8px 13px rgb(0 137 207 / 10%); border-radius: 20px; padding: 1rem; position: relative; margin-bottom: 1rem; display: flex; align-items: center; }
+.createcrate-list-item {background: #FFFFFF; box-shadow: 0px 0px 17px 3px rgb(0 0 0 / 10%); border-radius: 20px; padding: 1rem; position: relative; margin-bottom: 1rem; display: flex; align-items: center; }
 .createcrate-list-item-icon {width: 65px; height: 65px; text-align: center; margin: auto; margin-right: 10px; position: relative; } 
 .createcrate-list-item-text {flex: 1; }
 .createcrate-list-item-text h3{position: relative;padding: 0;font-weight: 600;font-size: 15px;line-height: 16px;color: #455A64;margin: 0 0 10px 0;}
@@ -44,7 +44,7 @@ a.createcrate-btn:hover{color: #fff;}
 .createcrate-list-item-action a.edit-btn i{position: absolute; top: 34%; right: 4%;}
 
 
-.createcrate-profile-item {background: #FFFFFF;box-shadow: 0px 8px 13px rgb(0 137 207 / 10%);border-radius: 20px;padding: 1rem;position: relative;margin-bottom: 1rem;display: flex;align-items: center;}
+.createcrate-profile-item {background: #FFFFFF;box-shadow: 0px 0px 17px 3px rgb(0 0 0 / 10%);border-radius: 20px;padding: 1rem;position: relative;margin-bottom: 1rem;display: flex;align-items: center;}
 .createcrate-profile-icon {width: 50px; height: 50px; background: #F6FFFA; display: inline-block; border-radius: 50%; text-align: center; line-height: 50px; margin-bottom: 10px; }
 .createcrate-profile-text h3{font-weight: 400;font-size: 13px;line-height: 15px;color: #8C9AA1;margin: 0 0 10px 0;padding: 0;}
 .createcrate-profile-text h2{font-weight: 600;font-size: 16px;line-height: 19px;color: #455A64;padding: 0;margin: 0;}
