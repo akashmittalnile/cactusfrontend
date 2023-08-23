@@ -6,7 +6,7 @@ import ApiService from '../../../core/services/ApiService';
 import Loader from '../../common/Loader';
 import { totalPageCalculator } from '../../../utils/status.utils';
 
-const LIMIT = 5;
+const LIMIT = 10;
 
 const TransactionState = () => {
 
@@ -83,7 +83,7 @@ const TransactionState = () => {
                                                 transaction.map((ele, indx) => {
                                                     return (
                                                         <tr key={indx}>
-                                                            <td>{indx + 1}</td>
+                                                            <td>{(pageNum === 1) ? (indx + 1) : (indx + 1 + (LIMIT * (pageNum - 1)))}</td>
                                                             <td className='text-capitalize'>{ele.first_name ?? "NA"} {ele.last_name ?? ""}</td>
                                                             <td>{parseFloat(ele.balance).toFixed(2) ?? 0}</td>
                                                             <td>{ele.club_name ?? "NA"}</td>

@@ -12,7 +12,7 @@ import delete_news from "../../../assets/images/admin/delete-news.svg";
 import { toast } from 'react-hot-toast';
 import { totalPageCalculator } from '../../../utils/status.utils';
 
-const LIMIT = 5;
+const LIMIT = 10;
 
 const Pages = () => {
 
@@ -109,7 +109,7 @@ const Pages = () => {
                                                     return (
                                                         <tr key={indx}>
                                                             <td>
-                                                                <span className="sno">{indx + 1}</span>
+                                                                <span className="sno">{(pageNum === 1) ? (indx + 1) : (indx + 1 + (LIMIT * (pageNum - 1)))}</span>
                                                             </td>
 
                                                             <td>
