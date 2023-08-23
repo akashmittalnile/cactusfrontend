@@ -16,7 +16,7 @@ const CreateCactusCrates = () => {
     const navigate = useNavigate();
     const [stockList, setStockList] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [count, setCount] = useState([{ stock: "", quantity: "", price: 0, symbol: "", name: "" }]);
+    const [count, setCount] = useState([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]);
     const [image, setImage] = useState(up);
     const [imgError, setImgError] = useState(false);
     const [file, setFile] = useState();
@@ -102,7 +102,7 @@ const CreateCactusCrates = () => {
     }
 
     const addStockInput = () => {
-        setCount([...count, { stock: "", quantity: "", price: 0, symbol: "", name: "" }]);
+        setCount([...count, { stock: "", quantity: null, price: 0, symbol: "", name: "" }]);
     }
 
     const removeStockInput = (index) => {
@@ -139,11 +139,10 @@ const CreateCactusCrates = () => {
     }
 
     const getTotal = () => {
-        if (count[0].quantity == "" || count[0].stock == "") {
-            return 0;
-        }
-        let total = count.reduce((n, { quantity, price }) => parseFloat(n) + (parseFloat(quantity) * parseFloat(price)), 0);
-        return parseFloat(total).toFixed(2);
+        let total = count.reduce((n, { quantity, price }) => parseFloat(n) + (parseFloat((quantity === "") ? 0 : quantity) * parseFloat(price ?? 0)), 0);
+        // console.log(total);
+        if(total === "" || total === 0 || total === null || total === undefined) return 0;
+        return parseFloat(total ?? 0).toFixed(2);
     }
 
     useEffect(() => {
@@ -246,7 +245,7 @@ const CreateCactusCrates = () => {
                                             <div className="col-md-2">
                                                 <div className='row mt-4'>
                                                     {
-                                                        (curEle.quantity !== "" && curEle.quantity !== undefined && curEle.stock !== "" && curEle.stock !== undefined) && (
+                                                        (curEle.quantity !== "" && curEle.quantity && curEle.quantity !== undefined && curEle.stock !== "" && curEle.stock !== undefined) && (
                                                             parseFloat(curEle.quantity).toFixed(1) + ' X ' + parseFloat(curEle.price).toFixed(1) + ' = ' + parseFloat(curEle.price * curEle.quantity).toFixed(2)
                                                         )
                                                     }

@@ -24,7 +24,7 @@ const EditCactusCrates = () => {
     const [isDelete, setDelete] = useState({ status: false, id: "", index: "" });
     const [add, setAdd] = useState({ status: false });
     const [count, setCount] = useState([]);
-    const [newCount, setNewCount] = useState([{ stock: "", quantity: "", price: 0, symbol: "", name: "" }]);
+    const [newCount, setNewCount] = useState([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]);
     const [image, setImage] = useState(up)
     const [file, setFile] = useState({})
 
@@ -41,11 +41,19 @@ const EditCactusCrates = () => {
         setLoading(false);
     }
 
+    const twelevePrice = async (symbol) => {
+        const response = await axios.get(api.TwelveDataPrice + `?symbol=${symbol}&apikey=6b7ad9bbb1014db4baff00e7719f7689`);
+        return response.data.price ?? 0;
+    }
+
     const getCrateShareDetails = async (api) => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
         console.log("Crate Share list => ", response.data.body);
         if (response.data.headers.success === 1) {
+            // (response.data.body).map((element, i) => {
+            //     element.twelve = await twelevePrice(element.share_id);
+            // });
             setCount(response.data.body);
         } else setCount([]);
         setLoading(false);
@@ -160,6 +168,7 @@ const EditCactusCrates = () => {
         }
         resetForm();
         getCrateShareDetails(api.CrateShareDetails + `${decode(id)}`);
+        setNewCount([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]);
         setAdd({ status: false });
         setLoading(false);
     }
@@ -175,25 +184,18 @@ const EditCactusCrates = () => {
         setCount(list);
     }
 
-    const twelevePrice = async (symbol, index) => {
-        const response = await axios.get(api.TwelveDataPrice + `?symbol=${symbol}&apikey=6b7ad9bbb1014db4baff00e7719f7689`);
-        const list = [...newCount];
-        list[index]['price'] = response.data.price ?? 0;
-        setNewCount(list);
-    }
-
-    const handleNewChangeStock = (e, index = 0) => {
+    const handleNewChangeStock = async (e, index = 0) => {
         const { value } = e.target;
         const splitVal = value.split(",");
         const list = [...newCount];
         list[index]['stock'] = value;
         list[index]['symbol'] = splitVal[splitVal.length - 1];
+        list[index]['price'] = await twelevePrice(splitVal[splitVal.length - 1]);
         let charIndex = value.indexOf(splitVal[splitVal.length - 1]);
         list[index]['name'] = value.substring(0, charIndex - 1);
         setNewCount(list);
-        twelevePrice(splitVal[splitVal.length - 1], index);
     }
-console.log(newCount);
+
     const handleChangeQuantity = (e, index) => {
         const { value } = e.target;
         const list = [...count];
@@ -206,6 +208,13 @@ console.log(newCount);
         const list = [...newCount];
         list[index]['quantity'] = value;
         setNewCount(list);
+    }
+
+    const getTotal = () => {
+        let total = newCount.reduce((n, { quantity, price }) => parseFloat(n) + (parseFloat((quantity === "") ? 0 : quantity) * parseFloat(price ?? 0)), 0);
+        // console.log(total);
+        if(total === "" || total === 0 || total === null || total === undefined) return 0;
+        return parseFloat(total ?? 0).toFixed(2);
     }
 
     useEffect(() => {
@@ -412,13 +421,13 @@ console.log(newCount);
             </Modal>
 
 
-            <Modal isOpen={add.status} toggle={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: "", price: 0, symbol: "", name: "" }]); }} className="njmep-modal">
+            <Modal isOpen={add.status} toggle={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]); }} className="njmep-modal">
                 <div className="modal-content">
                     <ModalBody className='modal-body'>
                         <div className="deletenews-form-info">
                             <button
                                 type="button"
-                                onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: "", price: 0, symbol: "", name: "" }]); }}
+                                onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]); }}
                                 className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
@@ -447,7 +456,7 @@ console.log(newCount);
                                             <div className="col-md-12">
                                                 <div className="form-group">
                                                     <label>Stock/Share Quantity</label>
-                                                    <input required type="text" onChange={(e) => handleNewChangeQuantity(e)} className="form-control" name="quantity" placeholder='Quantity' value={newCount.quantity} />
+                                                    <input required type="number" onChange={(e) => handleNewChangeQuantity(e)} className="form-control" name="quantity" placeholder='Quantity' value={newCount.quantity} />
                                                 </div>
                                             </div>
                                             <div className='col-md-12 my-3'>
@@ -460,9 +469,12 @@ console.log(newCount);
                                                         null
                                                 }
                                             </div>
+                                            <div className='mb-3'>
+                                                <b>Total : </b><b><span className="text-success">{getTotal() ?? 0}</span></b>
+                                            </div>
                                             <div className="col-md-12">
                                                 <div className="form-group">
-                                                    <button onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: "", price: 0, symbol: "", name: "" }]); }} type="button" className="Cancel-btn">Cancel</button>
+                                                    <button onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]); }} type="button" className="Cancel-btn">Cancel</button>
                                                     <button type="submit" className="Create-btn mx-2">Add</button>
                                                 </div>
                                             </div>
