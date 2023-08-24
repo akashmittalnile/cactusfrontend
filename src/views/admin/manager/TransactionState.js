@@ -4,7 +4,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { decode } from 'base-64';
 import ApiService from '../../../core/services/ApiService';
 import Loader from '../../common/Loader';
-import { totalPageCalculator } from '../../../utils/status.utils';
+import { totalPageCalculator, transactionType } from '../../../utils/status.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 10;
 
@@ -29,6 +30,13 @@ const TransactionState = () => {
         setLoading(false);
     }
 
+    const handleFilter = (e) => {
+        e.persist();
+        let type = "";
+        if (e.target.name === 'type') type = e.target.value;
+        getTransactionList(api.TransactionStatement + `?owner_id=${decode(id)}&owner_type=user&page=${pageNum}&limit=${LIMIT}&payment_type=${type}`);
+    }
+
     useEffect(() => {
         getTransactionList(api.TransactionStatement + `?owner_id=${decode(id)}&owner_type=user&page=${pageNum}&limit=${LIMIT}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,28 +46,37 @@ const TransactionState = () => {
         <>
             {loading ? <Loader /> : null}
             <div className="user-table-section">
-                <div className="heading-section">
-                    <div className="d-flex justify-content-between align-items-center">
+                <div className="user-content-section">
+
+                    <div className="club-detail-header">
                         <div className="mr-auto">
-                            <h4 className="heading-title">Manager Transaction Statement</h4>
+                            <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1) }}><i className="las la-arrow-left"></i> Back</Link>
                         </div>
-                        <div className='mx-3'>
-                            <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1); }} ><i className="las la-arrow-left"></i> Back</Link>
+                        <div className="stockoptions-filter wd30">
+                            <div className="row g-2">
+                                <div className="col-md-12">
+                                    <div className="form-group">
+                                        <select className="form-control" name="type" onChange={(e) => handleFilter(e)} style={{ height: "44.5px" }}>
+                                            <option value="">Select Type</option>
+                                            <option value="user">Individual</option>
+                                            <option value="club">Club</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className='mb-3'>
-                    <nav className='p-0'>
-                        <ol className="cd-breadcrumb m-0">
-                            <li><Link to="/manager">Managers</Link></li>
-                            <li><Link to={`/manager-details/${id}`}>Manager Details</Link></li>
-                            <li className="current"><em>Transaction Statement</em></li>
-                        </ol>
-                    </nav>
-                </div>
+                    <div className='mb-3'>
+                        <nav className='p-0'>
+                            <ol className="cd-breadcrumb m-0">
+                                <li><Link to="/manager">Managers</Link></li>
+                                <li><Link to={`/manager-details/${id}`}>Manager Details</Link></li>
+                                <li className="current"><em>Transaction Statement</em></li>
+                            </ol>
+                        </nav>
+                    </div>
 
-                <div className="user-content-section">
                     <div className="user-table-card">
 
                         <div className="table-responsive">
@@ -87,7 +104,7 @@ const TransactionState = () => {
                                                             <td className='text-capitalize'>{ele.first_name ?? "NA"} {ele.last_name ?? ""}</td>
                                                             <td>{parseFloat(ele.balance).toFixed(2) ?? 0}</td>
                                                             <td>{ele.club_name ?? "NA"}</td>
-                                                            <td>{ele.type ?? "NA"}</td>
+                                                            <td>{transactionType(ele.type)}</td>
                                                             <td>{ele.comment ?? "NA"}</td>
                                                         </tr>
                                                     )
@@ -96,7 +113,12 @@ const TransactionState = () => {
                                             :
                                             (
                                                 <tr className='text-center'>
-                                                    <td colSpan={6}>No record found</td>
+                                                    <td colSpan="6">
+                                                        <div>
+                                                            <img className='my-3' src={nodata} alt="no-data" />
+                                                            <p>No transaction found</p>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             )
                                     }

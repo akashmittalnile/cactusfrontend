@@ -18,6 +18,12 @@ export const pageStatus = (Id) => {
     else if (statusId === 2) return "Inactive";
 }
 
+export const transactionType = (type) => {
+    if (type === 'cr') return "Credit";
+    else if (type === 'dr') return "Debit";
+    else return "NA";
+}
+
 export const approvalStatus = (id) => {
     id = parseInt(id);
     if (id === 1) {

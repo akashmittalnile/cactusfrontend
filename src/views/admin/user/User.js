@@ -11,6 +11,7 @@ import { userStatus, approvalStatus } from '../../../utils/status.utils';
 import { toast } from 'react-hot-toast';
 import john from "../../../assets/images/admin/john-doe.png";
 import { totalPageCalculator } from '../../../utils/status.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 10;
 
@@ -219,12 +220,15 @@ const User = () => {
                                             :
                                             (
                                                 <tr className='text-center'>
-                                                    <td colSpan="9">No users found</td>
+                                                    <td colSpan="10">
+                                                        <div>
+                                                            <img className='my-3' src={nodata} alt="no-data" />
+                                                            <p>No users found</p>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             )
                                     }
-
-
 
                                 </tbody>
                             </table>

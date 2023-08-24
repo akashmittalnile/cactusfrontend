@@ -9,6 +9,7 @@ import moment from 'moment';
 import { api } from '../../../utils/api.utils';
 import { totalPageCalculator } from '../../../utils/status.utils';
 import { encode, decode } from 'base-64';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 4;
 
@@ -147,8 +148,11 @@ const UserOrderList = () => {
                                         )
                                         :
                                         (
-                                            <div className="col-md-12 text-center mt-4 mt-5">
-                                                <p>No order found</p>
+                                            <div className="col-md-12 text-center mt-4">
+                                                <div>
+                                                    <img className='mb-3' src={nodata} alt="no-data" />
+                                                    <p>No order found</p>
+                                                </div>
                                             </div>
                                         )
                                 }

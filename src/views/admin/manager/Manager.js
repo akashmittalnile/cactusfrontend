@@ -11,6 +11,7 @@ import moment from 'moment';
 import { toast } from 'react-hot-toast';
 import john1 from "../../../assets/images/admin/john-doe1.png";
 import { totalPageCalculator } from '../../../utils/status.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 10;
 
@@ -219,7 +220,12 @@ const Manager = () => {
                                             :
                                             (
                                                 <tr className='text-center'>
-                                                    <td colSpan="9">No users found</td>
+                                                    <td colSpan="10">
+                                                        <div>
+                                                            <img className='my-3' src={nodata} alt="no-data" />
+                                                            <p>No managers found</p>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             )
                                     }

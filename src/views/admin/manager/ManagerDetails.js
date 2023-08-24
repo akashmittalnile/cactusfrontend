@@ -26,6 +26,7 @@ import u2 from "../../../assets/images/admin/u2.png";
 import u3 from "../../../assets/images/admin/u3.png";
 import credit from "../../../assets/images/admin/credit.svg";
 import debit from "../../../assets/images/admin/debit.svg";
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const ManagerDetails = () => {
 
@@ -417,8 +418,11 @@ const ManagerDetails = () => {
                                                     )
                                                     :
                                                     (
-                                                        <div className="col-12 text-center mt-4">
-                                                            <p>No club found</p>
+                                                        <div className="col-md-12 text-center mt-4">
+                                                            <div>
+                                                                <img className='mb-3' src={nodata} alt="no-data" />
+                                                                <p>No club found</p>
+                                                            </div>
                                                         </div>
                                                     )
                                             }
@@ -476,7 +480,12 @@ const ManagerDetails = () => {
                                                                 :
                                                                 (
                                                                     <tr className='text-center'>
-                                                                        <td colSpan={6}>No portfolio stock found</td>
+                                                                        <td colSpan="6">
+                                                                            <div>
+                                                                                <img className='my-3' src={nodata} alt="no-data" />
+                                                                                <p>No portfolio stocks found</p>
+                                                                            </div>
+                                                                        </td>
                                                                     </tr>
                                                                 )
                                                         }

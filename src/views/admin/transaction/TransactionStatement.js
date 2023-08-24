@@ -3,7 +3,8 @@ import { api } from '../../../utils/api.utils';
 import { Link, useNavigate } from 'react-router-dom';
 import ApiService from '../../../core/services/ApiService';
 import Loader from '../../common/Loader';
-import { totalPageCalculator } from '../../../utils/status.utils';
+import { totalPageCalculator, transactionType } from '../../../utils/status.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 10;
 
@@ -44,7 +45,7 @@ const TransactionStatement = () => {
         <>
             {loading ? <Loader /> : null}
             <div className="user-table-section">
-            <div className="heading-section">
+                <div className="heading-section">
                     <div className="d-flex align-items-center">
                         <div className="mr-auto">
                             <h4 className="heading-title">Admin Transaction Statement</h4>
@@ -95,7 +96,7 @@ const TransactionStatement = () => {
                                                             <td className='text-capitalize'>{ele.first_name ?? "NA"} {ele.last_name ?? ""}</td>
                                                             <td>{parseFloat(ele.balance).toFixed(2) ?? 0}</td>
                                                             <td>{ele.club_name ?? "NA"}</td>
-                                                            <td>{ele.type ?? "NA"}</td>
+                                                            <td>{transactionType(ele.type)}</td>
                                                             <td>{ele.comment ?? "NA"}</td>
                                                         </tr>
                                                     )
@@ -104,7 +105,12 @@ const TransactionStatement = () => {
                                             :
                                             (
                                                 <tr className='text-center'>
-                                                    <td colSpan={6}>No record found</td>
+                                                    <td colSpan="6">
+                                                        <div>
+                                                            <img className='my-3' src={nodata} alt="no-data" />
+                                                            <p>No transaction found</p>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             )
                                     }

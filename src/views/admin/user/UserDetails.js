@@ -27,6 +27,7 @@ import { encode } from 'base-64';
 import { userStatus } from '../../../utils/status.utils';
 import credit from "../../../assets/images/admin/credit.svg";
 import debit from "../../../assets/images/admin/debit.svg";
+import nodata from "../../../assets/images/admin/no_data.png";
 
 
 const UserDetails = () => {
@@ -89,7 +90,7 @@ const UserDetails = () => {
         console.log("user graph data => ", response.data.body);
         if (response.data.headers.success === 1) {
             let total_credit = 0, total_debit = 0, user_total_debit = 0, user_total_credit = 0, manager_total_debit = 0, manager_total_credit = 0;
-            if(response.data.body.length > 0){
+            if (response.data.body.length > 0) {
                 (response.data.body).map((ele) => {
                     total_debit += ele.total_debit;
                     total_credit += ele.total_credit;
@@ -344,7 +345,12 @@ const UserDetails = () => {
                                                                 :
                                                                 (
                                                                     <tr className='text-center'>
-                                                                        <td colSpan={6}>No portfolio stock found</td>
+                                                                        <td colSpan="6">
+                                                                            <div>
+                                                                                <img className='my-3' src={nodata} alt="no-data" />
+                                                                                <p>No portfolio stocks found</p>
+                                                                            </div>
+                                                                        </td>
                                                                     </tr>
                                                                 )
                                                         }
@@ -592,8 +598,11 @@ const UserDetails = () => {
                                                     )
                                                     :
                                                     (
-                                                        <div className="col-md-12 text-center mt-4 mt-5">
-                                                            <p>No club found</p>
+                                                        <div className="col-md-12 text-center mt-4">
+                                                            <div>
+                                                                <img className='mb-3' src={nodata} alt="no-data" />
+                                                                <p>No club found</p>
+                                                            </div>
                                                         </div>
                                                     )
                                             }

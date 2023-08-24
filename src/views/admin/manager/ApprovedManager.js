@@ -11,6 +11,7 @@ import moment from 'moment';
 import deleteImg from "../../../assets/images/admin/delete-news.svg";
 import john1 from "../../../assets/images/admin/john-doe1.png";
 import { totalPageCalculator } from '../../../utils/status.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 10;
 
@@ -180,7 +181,12 @@ const ApprovedManager = () => {
                                             :
                                             (
                                                 <tr className='text-center'>
-                                                    <td colSpan={9}>No managers found</td>
+                                                    <td colSpan="8">
+                                                        <div>
+                                                            <img className='my-3' src={nodata} alt="no-data" />
+                                                            <p>No managers found</p>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             )
                                     }
