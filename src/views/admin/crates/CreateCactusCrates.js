@@ -139,7 +139,7 @@ const CreateCactusCrates = () => {
     }
 
     const getTotal = () => {
-        let total = count.reduce((n, { quantity, price }) => parseFloat(n) + (parseFloat((quantity === "") ? 0 : quantity) * parseFloat(price ?? 0)), 0);
+        let total = count.reduce((n, { quantity, price }) => parseFloat(n) + (parseFloat((quantity === "" || !quantity) ? 0 : quantity) * parseFloat(price ?? 0)), 0);
         // console.log(total);
         if(total === "" || total === 0 || total === null || total === undefined) return 0;
         return parseFloat(total ?? 0).toFixed(2);

@@ -11,6 +11,7 @@ import ApiService from '../../../core/services/ApiService';
 import { api } from '../../../utils/api.utils';
 import moment from 'moment';
 import { totalPageCalculator } from '../../../utils/status.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 4;
 
@@ -183,8 +184,11 @@ const Proposal = () => {
                                         )
                                         :
                                         (
-                                            <div className="col-md-12 text-center mt-4 mt-5">
-                                                <p>No proposals found</p>
+                                            <div className="col-md-12 text-center mt-4">
+                                                <div>
+                                                    <img className='mb-3' src={nodata} alt="no-data" />
+                                                    <p>No proposals found</p>
+                                                </div>
                                             </div>
                                         )
                                 }

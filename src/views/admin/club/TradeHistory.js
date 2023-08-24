@@ -8,6 +8,7 @@ import ApiService from '../../../core/services/ApiService';
 import { decode } from 'base-64';
 import moment from 'moment';
 import { api } from '../../../utils/api.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const TradeHistory = () => {
 
@@ -72,7 +73,7 @@ const TradeHistory = () => {
 
                                 <div className="col-md-6">
                                     <div className="form-group">
-                                        <select className="form-control" name='order_type' onChange={(e) => handleFilter(e)} style={{height: "44.5px"}}>
+                                        <select className="form-control" name='order_type' onChange={(e) => handleFilter(e)} style={{ height: "44.5px" }}>
                                             <option value="">Select Order Type</option>
                                             <option value="buy">Buy</option>
                                             <option value="sell">Sell</option>
@@ -88,7 +89,7 @@ const TradeHistory = () => {
                         <nav className='p-0'>
                             <ol className="cd-breadcrumb m-0">
                                 <li><Link to="/clubs">Clubs</Link></li>
-                                <li><Link to="" onClick={()=>navigate(-1)}>Club Details</Link></li>
+                                <li><Link to="" onClick={() => navigate(-1)}>Club Details</Link></li>
                                 <li className="current"><em>Trade History</em></li>
                             </ol>
                         </nav>
@@ -122,8 +123,8 @@ const TradeHistory = () => {
                                                                     <div className="shares-comp-content">
                                                                         <div className="shares-comp-name text-capitalize">{ele.name} ({ele.symbol})</div>
                                                                         <div className="shares-value">{ele.quantity} Shares</div>
-                                                                        <div  className="mt-2" style={{fontSize: "13px"}}><b>Total buy price : </b>{parseFloat(ele.total_cost ?? 0).toFixed(2)}</div>
-                                                                        <div  className="mt-2" style={{fontSize: "13px"}}><b>Stock buy price : </b>{parseFloat(ele.value ?? 0).toFixed(2)}</div>
+                                                                        <div className="mt-2" style={{ fontSize: "13px" }}><b>Total buy price : </b>{parseFloat(ele.total_cost ?? 0).toFixed(2)}</div>
+                                                                        <div className="mt-2" style={{ fontSize: "13px" }}><b>Stock buy price : </b>{parseFloat(ele.value ?? 0).toFixed(2)}</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -141,8 +142,11 @@ const TradeHistory = () => {
                                         )
                                         :
                                         (
-                                            <div className="col-md-12 text-center mt-4 mt-5">
-                                                <p>No trade history found</p>
+                                            <div className="col-md-12 text-center mt-4">
+                                                <div>
+                                                    <img className='mb-3' src={nodata} alt="no-data" />
+                                                    <p>No trade history found</p>
+                                                </div>
                                             </div>
                                         )
                                 }

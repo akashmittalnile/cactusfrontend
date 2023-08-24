@@ -9,6 +9,7 @@ import { api } from '../../../utils/api.utils';
 import { decode, encode } from 'base-64';
 import ApiService from '../../../core/services/ApiService';
 import Loader from '../../common/Loader';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const CactusCrateList = () => {
 
@@ -100,23 +101,35 @@ const CactusCrateList = () => {
                                 </div>
                                 <div className="createcrate-profile-overview">
                                     <div className="row">
-                                        <h6 className='text-center mt-4' style={{color: "#fff"}}>Stocks Added</h6>
+                                        <h6 className='text-center mt-4' style={{ color: "#fff" }}>Stocks Added</h6>
                                         {
-                                            stockList.map((ele, indx) => {
-                                                return (
-                                                    <div key={indx} className="col-md-6">
-                                                        <div className="createcrate-profile-item">
-                                                            {/* <div className="createcrate-profile-icon">
+                                            stockList.length !== 0 ?
+                                                (
+                                                    stockList.map((ele, indx) => {
+                                                        return (
+                                                            <div key={indx} className="col-md-6">
+                                                                <div className="createcrate-profile-item">
+                                                                    {/* <div className="createcrate-profile-icon">
                                                             <img src={down} alt="not-found" />
                                                         </div> */}
-                                                            <div className="createcrate-profile-text">
-                                                                <h3>{ele.c_name ?? ""}, {ele.share_id ?? "NA"}</h3>
-                                                                <h3 className='text-capitalize mb-0 mt-2' style={{color: "#00ee57"}}>Quantity : {ele.quantity ?? 0}</h3>
+                                                                    <div className="createcrate-profile-text">
+                                                                        <h3>{ele.c_name ?? ""}, {ele.share_id ?? "NA"}</h3>
+                                                                        <h3 className='text-capitalize mb-0 mt-2' style={{ color: "#00ee57" }}>Quantity : {ele.quantity ?? 0}</h3>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+                                                        )
+                                                    })
+                                                )
+                                                :
+                                                (
+                                                    <div className='d-flex mt-5 justify-content-center'>
+                                                        <div className='text-center'>
+                                                            <img className='mb-3' src={nodata} alt="no-data" />
+                                                            <p style={{ color: "#fff" }}>No stocks found</p>
                                                         </div>
                                                     </div>
                                                 )
-                                            })
                                         }
                                     </div>
                                 </div>
@@ -129,22 +142,34 @@ const CactusCrateList = () => {
                             <h2>Other Crates List</h2>
 
                             {
-                                crateList.map((ele, indx) => {
-                                    return (
-                                        <div key={indx} className="createcrate-list-item">
-                                            <div className="createcrate-list-item-icon">
-                                                <img src={createcrate} alt="not-found" />
-                                            </div>
-                                            <div className="createcrate-list-item-text">
-                                                <h3 className='text-capitalize'>{ele.name ?? "NA"}</h3>
-                                                <div className="createcrate-price">${parseFloat(ele.amount ?? 0).toFixed(2)}</div>
-                                            </div>
-                                            <div className="createcrate-list-item-action">
-                                                <Link className="edit-btn" onClick={() => changeCrate(ele.id)} to=""><i className="las la-eye"></i></Link>
+                                crateList.length !== 0 ?
+                                    (
+                                        crateList.map((ele, indx) => {
+                                            return (
+                                                <div key={indx} className="createcrate-list-item">
+                                                    <div className="createcrate-list-item-icon">
+                                                        <img src={createcrate} alt="not-found" />
+                                                    </div>
+                                                    <div className="createcrate-list-item-text">
+                                                        <h3 className='text-capitalize'>{ele.name ?? "NA"}</h3>
+                                                        <div className="createcrate-price">${parseFloat(ele.amount ?? 0).toFixed(2)}</div>
+                                                    </div>
+                                                    <div className="createcrate-list-item-action">
+                                                        <Link className="edit-btn" onClick={() => changeCrate(ele.id)} to=""><i className="las la-eye"></i></Link>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    )
+                                    :
+                                    (
+                                        <div className='d-flex mt-5 justify-content-center'>
+                                            <div className='text-center'>
+                                                <img className='mb-3' src={nodata} alt="no-data" />
+                                                <p>No other crates found</p>
                                             </div>
                                         </div>
                                     )
-                                })
                             }
 
                         </div>

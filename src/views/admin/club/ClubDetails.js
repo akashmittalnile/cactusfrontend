@@ -13,6 +13,7 @@ import { Modal, ModalBody } from "reactstrap";
 import axios from 'axios';
 import Loader from "../../common/Loader";
 import { api } from '../../../utils/api.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 import { geSuggestiont, getAbstain, getAbstainPenalties, getExplusion, getGroupInvite, getPropSubLimit, getProposalCancellation, getPublicStatsVal, getRequestToJoinVal, getSettingChanges, getVotingPeriod } from '../../../utils/cactus.utils';
 
 const ClubDetails = () => {
@@ -168,8 +169,11 @@ const ClubDetails = () => {
                                         }))
                                         :
                                         (
-                                            <div className='d-flex justify-content-center mt-5'>
-                                                No shares found
+                                            <div className="d-flex justify-content-center mt-4">
+                                                <div className='text-center'>
+                                                    <img className='mb-3' src={nodata} alt="no-data" />
+                                                    <p>No shares found</p>
+                                                </div>
                                             </div>
                                         )
                                 }

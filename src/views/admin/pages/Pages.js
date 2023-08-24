@@ -11,6 +11,7 @@ import { htmlToText } from 'html-to-text';
 import delete_news from "../../../assets/images/admin/delete-news.svg";
 import { toast } from 'react-hot-toast';
 import { totalPageCalculator } from '../../../utils/status.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 10;
 
@@ -148,7 +149,12 @@ const Pages = () => {
                                             :
                                             (
                                                 <tr className='text-center'>
-                                                    <td colSpan="4">No record found</td>
+                                                    <td colSpan="5">
+                                                        <div>
+                                                            <img className='my-3' src={nodata} alt="no-data" />
+                                                            <p>No record found</p>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             )
                                     }

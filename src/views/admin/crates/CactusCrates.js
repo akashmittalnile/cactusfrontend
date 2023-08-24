@@ -14,6 +14,7 @@ import { totalPageCalculator } from '../../../utils/status.utils';
 import delete_news from "../../../assets/images/admin/delete-news.svg";
 import { Modal, ModalBody } from "reactstrap";
 import { toast } from 'react-hot-toast';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 4;
 
@@ -40,11 +41,11 @@ const CactusCrates = () => {
     const deleteNews = async (id) => {
         setLoading(true);
         const response = await ApiService.deleteAPIWithAccessToken(api.DeleteCrate + `${id}`);
-        if(response.data.headers.success === 1){
+        if (response.data.headers.success === 1) {
             toast.success("Crates delete successfully!");
         }
         getAllCrates(api.AllCrate + `?page=${pageNum}&limit=${LIMIT}`)
-        setTrash({status: false, id: null});
+        setTrash({ status: false, id: null });
         setLoading(false);
     }
 
@@ -101,7 +102,7 @@ const CactusCrates = () => {
                                                         <div className="cactuscrates-action">
                                                             <Link to={`/cactus-crates-list/${encode(ele.id)}`}>View</Link>
                                                             <Link to={`/cactus-crates-edit/${encode(ele.id)}`}>Edit</Link>
-                                                            <Link to="" onClick={()=>setTrash({status: true, id: ele.id})}>Delete</Link>
+                                                            <Link to="" onClick={() => setTrash({ status: true, id: ele.id })}>Delete</Link>
                                                         </div>
                                                     </div>
                                                     <div className="cactuscrates-stock crates-stock-up">
@@ -115,7 +116,10 @@ const CactusCrates = () => {
                                 :
                                 (
                                     <div className='d-flex mt-5 justify-content-center'>
-                                        No crates found
+                                        <div className='text-center'>
+                                            <img className='mb-3' src={nodata} alt="no-data" />
+                                            <p>No crates found</p>
+                                        </div>
                                     </div>
                                 )
                         }

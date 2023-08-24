@@ -9,6 +9,7 @@ import u3 from "../../../assets/images/admin/u3.png";
 import Loader from "../../common/Loader";
 import { api } from '../../../utils/api.utils';
 import { totalPageCalculator } from '../../../utils/status.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 6;
 
@@ -196,10 +197,12 @@ const Club = () => {
                                             )
                                             :
                                             (
-                                                <div className="col-12 text-center mt-4">
-                                                    <p>No managers club found</p>
+                                                <div className="col-md-12 text-center mt-4">
+                                                    <div>
+                                                        <img className='mb-3' src={nodata} alt="no-data" />
+                                                        <p>No managers club found</p>
+                                                    </div>
                                                 </div>
-
                                             )
                                     }
 
@@ -323,10 +326,12 @@ const Club = () => {
                                             )
                                             :
                                             (
-                                                <div className="col-12 text-center mt-4">
-                                                    <p>No cactus club found</p>
+                                                <div className="col-md-12 text-center mt-4">
+                                                    <div>
+                                                        <img className='mb-3' src={nodata} alt="no-data" />
+                                                        <p>No cactus club found</p>
+                                                    </div>
                                                 </div>
-
                                             )
                                     }
 

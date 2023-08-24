@@ -11,6 +11,7 @@ import { api } from '../../../utils/api.utils';
 import { htmlToText } from 'html-to-text';
 import { toast } from 'react-hot-toast';
 import { totalPageCalculator } from '../../../utils/status.utils';
+import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 3;
 
@@ -122,7 +123,10 @@ const News = () => {
                                 :
                                 (
                                     <div className='d-flex mt-5 justify-content-center'>
-                                        No news found
+                                        <div className='text-center'>
+                                            <img className='mb-3' src={nodata} alt="no-data" />
+                                            <p>No news found</p>
+                                        </div>
                                     </div>
                                 )
                         }
