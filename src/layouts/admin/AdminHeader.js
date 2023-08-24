@@ -6,7 +6,7 @@ import { logout } from "../../Store/slices/auth";
 import notification from "../../assets/images/admin/notification.svg";
 import profile from "../../assets/images/admin/profile.png";
 
-const AdminHeader = () => {
+const AdminHeader = (props) => {
 
     const dispatch = useDispatch();
     const signOut = useCallback(() => {
@@ -20,7 +20,7 @@ const AdminHeader = () => {
                     <div className="navbar-menu-wrapper">
                         <ul className="navbar-nav">
                             <NavItem className="nav-item">
-                                <Link className="nav-link toggle-sidebar mon-icon-bg">
+                                <Link className="nav-link toggle-sidebar mon-icon-bg" onClick={(e) => {e.preventDefault(); props.sidebar()}}>
                                     <i className="las la-bars"></i>
                                 </Link>
                             </NavItem>
