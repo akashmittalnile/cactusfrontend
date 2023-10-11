@@ -190,7 +190,7 @@ var AdminRoutes = [
         component: TransactionState
     },
     {
-        path: "/transaction-statement",
+        path: "/cactus-revenue",
         layout: AdminLayout,
         component: TransactionStatement
     },

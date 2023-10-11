@@ -7,6 +7,7 @@ import { totalPageCalculator, transactionType } from '../../../utils/status.util
 import nodata from "../../../assets/images/admin/no_data.png";
 
 const LIMIT = 10;
+let SUM = 0;
 
 const TransactionStatement = () => {
 
@@ -24,6 +25,10 @@ const TransactionStatement = () => {
         if (response.data.headers.success === 1) {
             setTotal(response.data.body.totalCount);
             setTransaction(response.data.body.listing);
+            SUM = (response.data.body.listing).reduce(function(prev, current) {
+                return prev + +current.balance
+            }, 0);
+              
         }
         else setTransaction([]);
         setLoading(false);
@@ -48,12 +53,12 @@ const TransactionStatement = () => {
                 <div className="heading-section">
                     <div className="d-flex align-items-center">
                         <div className="mr-auto">
-                            <h4 className="heading-title">Admin Transaction Statement</h4>
+                            <h4 className="heading-title">Cactus Revenue</h4>
                         </div>
                         <div className="btn-option-info wd30">
                             <div className="search-filter">
                                 <div className="row g-2">
-                                    <div className="col-md-12">
+                                    {/* <div className="col-md-12">
                                         <div className="form-group">
                                             <select className="form-control" name="type" onChange={(e) => handleFilter(e)} style={{ height: "44.5px" }}>
                                                 <option value="">Select Type</option>
@@ -61,7 +66,7 @@ const TransactionStatement = () => {
                                                 <option value="club">Club</option>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -145,6 +150,10 @@ const TransactionStatement = () => {
                                             null
                                     }
 
+
+                                    <div>
+                                        <b>Total :-</b><b className='pl-0'><span className="text-success">${SUM}</span></b>
+                                    </div>
                                 </tbody>
                             </table>
                         </div>

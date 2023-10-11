@@ -46,12 +46,12 @@ const AdminSidebar = () => {
                                 </Link>
                             </NavItem>
 
-                            <NavItem className="nav-item">
+                            {/* <NavItem className="nav-item">
                                 <Link className="nav-link" to="/manager">
                                     <span className="menu-icon"><img src={manager} alt="manager"/></span>
                                     <span className="menu-title">Managers</span>
                                 </Link>
-                            </NavItem>
+                            </NavItem> */}
 
                             <NavItem className="nav-item">
                                 <Link className="nav-link" to="/clubs">
@@ -66,12 +66,13 @@ const AdminSidebar = () => {
                                     <span className="menu-title">Cactus Crates</span>
                                 </Link>
                             </NavItem>
-                            <NavItem className="nav-item">
+
+                            {/* <NavItem className="nav-item">
                                 <Link className="nav-link" to="/leaderboard">
                                     <span className="menu-icon"><img src={leaderboard} alt="leaderboard"/></span>
                                     <span className="menu-title">Leaderboard</span>
                                 </Link>
-                            </NavItem>
+                            </NavItem> */}
 
                             <NavItem className="nav-item">
                                 <Link className="nav-link" to="/news">
@@ -82,15 +83,15 @@ const AdminSidebar = () => {
 
                             <NavItem className="nav-item">
                                 <Link className="nav-link" to="/pages">
-                                    <span className="menu-icon"><img src={news} alt="news"/></span>
+                                    <span className="menu-icon"><img src={leaderboard} alt="news"/></span>
                                     <span className="menu-title">Pages</span>
                                 </Link>
                             </NavItem>
 
                             <NavItem className="nav-item">
-                                <Link className="nav-link" to="/transaction-statement">
+                                <Link className="nav-link" to="/cactus-revenue">
                                     <span className="menu-icon"><img src={iexpe} alt="news"/></span>
-                                    <span className="menu-title">Transaction Statement</span>
+                                    <span className="menu-title">Cactus Revenue</span>
                                 </Link>
                             </NavItem>
 
