@@ -128,8 +128,9 @@ const ManagerDetails = () => {
                 <div>
                     <nav className='p-0'>
                         <ol className="cd-breadcrumb m-0">
-                            <li><Link to="/manager">Managers</Link></li>
-                            <li className="current"><em>Manager Details</em></li>
+                            <li><Link to="/users">Users</Link></li>
+                            <li><Link to={`/user-details/${userId}`}>User Details</Link></li>
+                            <li className="current"><em>Manager Mode</em></li>
                         </ol>
                     </nav>
                 </div>
@@ -337,12 +338,12 @@ const ManagerDetails = () => {
                         <div className="my-order-section">
                             <div className="my-order-tabs">
                                 <ul className="nav nav-tabs">
-                                    <li><Link to="" className={toggle === 3 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(3); }} data-bs-toggle="tab">Portfolio stocks</Link></li>
-                                    <li><Link to="" className={toggle === 1 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(1); }} data-bs-toggle="tab">Created Clubs</Link></li>
+                                    {/* <li><Link to="" className={toggle === 1 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(3); }} data-bs-toggle="tab">Portfolio stocks</Link></li> */}
+                                    <li><Link to="" className={toggle === 3 ? 'active' : ''} onClick={(e) => { e.preventDefault(); setToggle(1); }} data-bs-toggle="tab">Created Clubs</Link></li>
                                 </ul>
                             </div>
                             <div className="order-content tab-content">
-                                <div className={toggle === 1 ? 'tab-pane active' : 'tab-pane'} id="ActiveClubs">
+                                <div className={toggle === 3 ? 'tab-pane active' : 'tab-pane'} id="ActiveClubs">
                                     <div className="stockoptions-header">
                                         <div className="mr-auto">
                                             <h4 className="heading-title">Active Clubs </h4>
@@ -432,7 +433,7 @@ const ManagerDetails = () => {
                                     </div>
                                 </div>
 
-                                <div className={toggle === 3 ? 'tab-pane active' : 'tab-pane'} id="InactiveClubs">
+                                <div className={toggle === 1 ? 'tab-pane active' : 'tab-pane'} id="InactiveClubs">
 
                                     <div className="stockoptions-header">
                                         <div className="mr-auto">

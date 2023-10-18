@@ -45,6 +45,19 @@ const User = () => {
         setLoading(false);
     }
 
+    const handleManagerApproval = async (e, uid, status_number, role) => {
+        setLoading(true);
+        let data = {
+            userid: uid,
+            status: status_number,
+            user_role_id: role,
+        };
+        console.log(data);
+        const response = await ApiService.postAPIWithAccessToken(api.ManagerApproval, data);
+        if (response.data.headers.success === 1) { toast.success(`Manager Request ${status_number===1?'Pending':'Approved'}!`); getUserList(api.AllUser + `?page=${pageNum}&limit=${LIMIT}`); }
+        setLoading(false);
+    }
+
     const handleFilter = (e) => {
         e.persist();
         let name = "";
@@ -117,11 +130,11 @@ const User = () => {
                                         <th>Profile Image</th>
                                         <th>Name</th>
                                         <th>Email ID</th>
-                                        <th>Date of Birth</th>
                                         <th>Contact Number</th>
                                         <th>Address</th>
                                         <th>Approval Status</th>
                                         <th>Status</th>
+                                        <th>Manager Mode</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -165,10 +178,6 @@ const User = () => {
                                                             </td>
 
                                                             <td>
-                                                                {moment(ele.DOB).format('MMMM Do, YYYY')}
-                                                            </td>
-
-                                                            <td>
                                                                 {ele.phone_number}
                                                             </td>
 
@@ -189,6 +198,22 @@ const User = () => {
                                                                             <div className="">
                                                                                 <label className="toggle" onChange={(e) => handleChangeStatus(e, ele.id, ele.status)} htmlFor={`myToggle_${indx}`}>
                                                                                     <input className="toggle__input" name={`active_${indx}`} type="checkbox" id={`myToggle_${indx}`} defaultChecked={(ele.status === "2") ? "checked" : null} defaultValue={2} />
+                                                                                    <div className="toggle__fill"></div>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    ) : null
+                                                                }
+
+                                                            </td>
+
+                                                            <td>
+                                                                {
+                                                                    ele.manager_request !== "" ? (
+                                                                        <div className="switch-toggle">
+                                                                            <div className="">
+                                                                                <label className="toggle" onChange={(e) => handleManagerApproval(e, ele.id, (ele.manager_request==="2"?1:2), 3)} htmlFor={`managerRequest_${indx}`}>
+                                                                                    <input className="toggle__input" name={`active_request_${indx}`} type="checkbox" id={`managerRequest_${indx}`} defaultChecked={(ele.manager_request === "2") ? "checked" : null} defaultValue={2} />
                                                                                     <div className="toggle__fill"></div>
                                                                                 </label>
                                                                             </div>

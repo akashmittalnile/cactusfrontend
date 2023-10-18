@@ -59,7 +59,7 @@ h1, h2, h3, h4, h5, h6 {padding: 5px 0 15px 0;color: #455A64;-webkit-font-smooth
 .profile-pic img{width: 100%; height: 100%; object-fit: cover;}
 .profile-dropdown .dropdown-toggle::after{content: inherit;}
 .noti-dropdown .dropdown-toggle::after{content: inherit;}
-.header .navbar .dropdown-menu {position: absolute; font-size: 0.9rem; margin-top: 0; right: 0; left: auto; top: 50px; border: none; box-shadow: 0px 8px 13px rgb(0 0 0 / 5%); width: 160px; padding: 0; background: #ffffff; }
+.header .navbar .dropdown-menu {position: absolute; font-size: 0.9rem; margin-top: 0; right: 0; left: auto; top: 50px; border: none; box-shadow: 0px 8px 13px rgb(0 0 0 / 19%); width: 410px; padding: 0; background: #ffffff; }
 .header .navbar .dropdown-menu a.dropdown-item {font-size: 13px;font-weight: 500;color: #455a64;border-radius: 5px;}
 .header .navbar .dropdown-menu a.dropdown-item.active, 
 .header .navbar .dropdown-menu a.dropdown-item:active, 
@@ -176,4 +176,104 @@ a.action-btn i {position: absolute; top: 24%; right: 22%;}
      font-size: 1rem;
    }
  }
+
+.noti-dropdown .dropdown-toggle::after {
+
+  content: inherit;
+
+}
+
+.notification-head{padding: 10px; position: relative;}
+
+.notification-head h2 {
+
+  font-size: 16px;
+
+  margin: 0;
+
+  color: #343a40;
+
+  padding: 0;
+
+  font-weight: 600;
+
+}.notification-body {
+
+  overflow: auto;
+
+  height: 260px;
+
+}
+
+.notification-foot {
+
+  background: #03002b;
+
+  text-align: center;
+
+  padding: 10px 15px;
+
+  display: inline-block;
+
+  width: 100%;
+
+  color: #00ee57;
+
+}
+
+.notification-foot a{color:#00ee57}
+
+.noti-dropdown .dropdown-menu-right{
+
+  right: 0;
+
+  left: inherit;
+
+  border: none;
+
+}
+
+.notification-item {display: flex; padding: .75rem 1rem; }
+
+.notification-item:hover{background-color:#f4f6f9;}
+
+.notification-item-icon {
+
+  width: 32px;
+
+  height: 32px;
+
+  line-height: 32px;
+
+  background: #03002b;
+
+  margin-right: 10px;
+
+  text-align: center;
+
+  border-radius: 50%;
+
+  color: #ffffff;
+
+}.notification-item-text {
+
+  flex: 1;
+
+}.notification-item-text h2 {
+
+  font-size: 14px;
+
+  margin: 0 0 10px 0;color: #343a40;
+
+  padding: 0;
+
+}.notification-item-text p {
+
+  font-size: 12px;
+
+  color: #bcc4cf;
+
+  margin: 0;
+
+}
  

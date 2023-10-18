@@ -1,5 +1,7 @@
 exports.api = {
     login: `auth/admin/login`,
+    Notification: `admin/notification`,
+    ClearNotification: `admin/clear/notification`,
     Dashboard: `admin/dashboard`,
     UserManagerGraphData: `admin/user/dashboard`,
     AllUser: `admin/users`,
@@ -8,6 +10,7 @@ exports.api = {
     UserClubList: `admin/user/club/id/`,
     UserOrderDetails: `admin/order/id/`,
     UserStatusChange: `admin/user-status/id/`,
+    ManagerApproval: `admin/switch/user/status`,
     AllManager: `admin/managers`,
     ManagerClub: `admin/manager/club/id/`,
     AllClub: `admin/clubs`,

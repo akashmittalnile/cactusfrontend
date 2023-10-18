@@ -121,7 +121,8 @@ const UserDetails = () => {
                     <div>
                         <Link className="Back-btn" to="" onClick={(e) => { e.preventDefault(); navigate(-1); }}><i className="las la-arrow-left"></i> Back</Link>
                     </div>
-                    <div className="manager-club-action d-flex wd30">
+                    <div className={(details.manager_request === '2') ? "manager-club-action d-flex wd50" : "manager-club-action d-flex wd30"}>
+                        {(details.manager_request === '2') ? <Link className='mx-2' to={`/manager-details/${encode(details.id)}`}>Manager Mode</Link> : null}
                         <Link className='mx-2' to={`/user/orders/${userId}`}>Orders</Link>
                         <Link to={`/users-transaction-statement/${userId}`}>Transaction Statement</Link>
                     </div>
