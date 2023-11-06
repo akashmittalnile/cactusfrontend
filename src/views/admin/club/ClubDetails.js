@@ -243,7 +243,7 @@ const ClubDetails = () => {
 
                                                     <div className="group-info-item">
                                                         <div className="group-info-item-name">Entrance Fee</div>
-                                                        <div className="group-info-item-value">${parseFloat(club.entrance_fee ?? 0).toFixed(1)}</div>
+                                                        <div className="group-info-item-value">${parseFloat(((club.entrance_fee=="" || club.entrance_fee==null || club.entrance_fee==undefined) ? 0 : club.entrance_fee)).toFixed(1)}</div>
                                                     </div>
 
                                                     <div className="group-info-item">

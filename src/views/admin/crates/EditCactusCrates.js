@@ -24,9 +24,12 @@ const EditCactusCrates = () => {
     const [isDelete, setDelete] = useState({ status: false, id: "", index: "" });
     const [add, setAdd] = useState({ status: false });
     const [count, setCount] = useState([]);
-    const [newCount, setNewCount] = useState([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]);
+    const [dummyCount, setDummyCount] = useState([]);
+    const [newCount, setNewCount] = useState([{ stock: "", percentage: null, price: 0, symbol: "", name: "" }]);
     const [image, setImage] = useState(up)
-    const [file, setFile] = useState({})
+    const [file, setFile] = useState({});
+    const [perError, setPerError] = useState(false);
+    const [error, setError] = useState(false);
 
     const getCrateDetails = async (api) => {
         setLoading(true);
@@ -51,14 +54,23 @@ const EditCactusCrates = () => {
         const response = await ApiService.getAPIWithAccessToken(api);
         console.log("Crate Share list => ", response.data.body);
         if (response.data.headers.success === 1) {
-            // (response.data.body).map((element, i) => {
-            //     element.twelve = await twelevePrice(element.share_id);
-            // });
             setCount(response.data.body);
+            setDummyCount(response.data.body);
+            response.data.body.map((ele, ind) => {
+                twelevePriceCount(ele.share_id, ind);
+            })
         } else setCount([]);
         setLoading(false);
     }
 
+    const twelevePriceCount = async (symbol, index) => {
+        console.log("hjghjgfds => ",symbol, index);
+        const response = await axios.get(api.TwelveDataPrice + `?symbol=${symbol}&apikey=6b7ad9bbb1014db4baff00e7719f7689`);
+        const list = [...count];
+        list[index]['price_per_crate'] = response.data.price ?? 0;
+        setCount(list);
+    }
+    
     const getStockList = async (api) => {
         setLoading(true);
         const response = await axios.get(api);
@@ -69,66 +81,57 @@ const EditCactusCrates = () => {
         setLoading(false);
     }
 
-    const todayDate = (day) => {
-        var today = new Date();
-        var dd = today.getDate() + day;
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd;
-        }
-        if (mm < 10) {
-            mm = '0' + mm;
-        }
-        today = yyyy + '-' + mm + '-' + dd;
-        return today;
-    }
-
     const initialValue = {
         'name': crates.name ?? "",
-        'amount': crates.amount ?? "",
-        'usabe_no': crates.usabe_no ?? "",
-        'start_date': crates.start_date,
-        'end_date': crates.end_date,
         'status': crates.status,
         'file': "",
     };
 
     const initialValueAdd = {
         'stock': "",
-        'quantity': "",
+        'percentage': "",
     };
 
     const validateSchema = Yup.object().shape({
         name: Yup.string().required(`Crate name is required`),
-        amount: Yup.number().typeError('Crate amount must be digit').required(`Crate amount is required`),
-        start_date: Yup.date().required("Start date is required"),
-        end_date: Yup.date().required("End date is required"),
-        usabe_no: Yup.number().typeError('Number of Usable must be digit').required(`Number of Usable is required`),
         status: Yup.string().required(`Status is required`)
     });
 
     const editCrates = async (formValue) => {
+        if(getTotalPercentage() != 100){
+            setPerError(true);
+            return;
+        }
+        else setPerError(false);
+        if(getTotal() == 0.00){
+            setError(true);
+            return;
+        }
+        else setError(false);
         setLoading(true);
         console.log("Edit crate form data => ", formValue);
         let form = new FormData();
         form.append("name", formValue.name);
-        form.append("amount", formValue.amount);
-        form.append("start_date", formValue.start_date);
-        form.append("end_date", formValue.end_date);
-        form.append("usabe_no", formValue.usabe_no);
+        form.append("amount", null);
+        form.append("start_date", null);
+        form.append("end_date", null);
+        form.append("usabe_no", null);
         form.append("status", formValue.status);
         form.append("file", file);
         count.forEach((ele, index) => {
             form.append(`club_share[${index}][id]`, ele.crate_share_id);
-            form.append(`club_share[${index}][share_id]`, ele.symbol);
-            form.append(`club_share[${index}][quantity]`, ele.quantity);
+            form.append(`club_share[${index}][share_id]`, ele.share_id);
+            form.append(`club_share[${index}][quantity]`, 1);
+            form.append(`club_share[${index}][percentage]`, ele.percentage);
             form.append(`club_share[${index}][name]`, ele.name);
         });
         const response = await ApiService.putAPIWithAccessTokenMultiPart(api.EditCrateDetails + `${decode(id)}`, form);
         if (response.data.headers.success === 1) {
             toast.success('Crate updated successfully!');
             navigate(-1);
+        }
+        for (let [key, value] of form) {
+            console.log(`${key}: ${value}`)
         }
         setLoading(false);
     }
@@ -152,12 +155,22 @@ const EditCactusCrates = () => {
     }
 
     const addStock = async (formValue, { resetForm }) => {
+        if(getTotalPercentage() != 100){
+            setPerError(true);
+            return;
+        }
+        else setPerError(false);
+        if(getTotal() == 0.00){
+            setError(true);
+            return;
+        }
+        else setError(false);
         setLoading(true);
         const data = {
             "crate_id": decode(id),
             "share_id": newCount[0].symbol,
             "name": newCount[0].name,
-            "quantity": newCount[0].quantity,
+            "percentage": newCount[0].percentage,
             "status": 1
         }
         // console.log(data);
@@ -168,7 +181,7 @@ const EditCactusCrates = () => {
         }
         resetForm();
         getCrateShareDetails(api.CrateShareDetails + `${decode(id)}`);
-        setNewCount([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]);
+        setNewCount([{ stock: "", percentage: null, price: 0, symbol: "", name: "" }]);
         setAdd({ status: false });
         setLoading(false);
     }
@@ -181,6 +194,7 @@ const EditCactusCrates = () => {
         list[index]['symbol'] = splitVal[splitVal.length - 1];
         let charIndex = value.indexOf(splitVal[splitVal.length - 1]);
         list[index]['name'] = value.substring(0, charIndex - 1);
+        twelevePriceCount(splitVal[splitVal.length - 1], index)
         setCount(list);
     }
 
@@ -199,21 +213,34 @@ const EditCactusCrates = () => {
     const handleChangeQuantity = (e, index) => {
         const { value } = e.target;
         const list = [...count];
-        list[index]['quantity'] = value;
+        list[index]['percentage'] = value;
         setCount(list);
     }
 
     const handleNewChangeQuantity = (e, index = 0) => {
         const { value } = e.target;
         const list = [...newCount];
-        list[index]['quantity'] = value;
+        list[index]['percentage'] = value;
         setNewCount(list);
     }
 
     const getTotal = () => {
-        let total = newCount.reduce((n, { quantity, price }) => parseFloat(n) + (parseFloat((quantity === "" || !quantity) ? 0 : quantity) * parseFloat(price ?? 0)), 0);
-        // console.log(total);
-        if(total === "" || total === 0 || total === null || total === undefined) return 0;
+        let total = newCount.reduce((n, { percentage, price }) => parseFloat(n) + (parseFloat((percentage === "" || !percentage) ? 0 : percentage/100) * parseFloat(price ?? 0)), 0);
+        if(total === "" || total === 0 || total === null || total === undefined) total = 0;
+        let newtotal = count.reduce((n, { percentage, price_per_crate }) => parseFloat(n) + (parseFloat((percentage === "" || !percentage) ? 0 : percentage/100) * parseFloat(price_per_crate ?? 0)), 0);
+        if(newtotal === "" || newtotal === 0 || newtotal === null || newtotal === undefined) newtotal = 0;
+        total += newtotal;
+        return parseFloat(total ?? 0).toFixed(2);
+    }
+
+    console.log(count);
+
+    const getTotalPercentage = () => {
+        let total = dummyCount.reduce((n, { percentage, price }) => parseFloat(n) + parseFloat((percentage === "" || !percentage) ? 0 : percentage), 0);
+        if(total === "" || total === 0 || total === null || total === undefined) total = 0;
+        let newtotal = newCount.reduce((n, { percentage, price }) => parseFloat(n) + parseFloat((percentage === "" || !percentage) ? 0 : percentage), 0);
+        if(newtotal === "" || newtotal === 0 || newtotal === null || newtotal === undefined) newtotal = 0;
+        total += newtotal;
         return parseFloat(total ?? 0).toFixed(2);
     }
 
@@ -239,7 +266,7 @@ const EditCactusCrates = () => {
                     <Formik initialValues={initialValue} validateOnChange={true} validationSchema={validateSchema} enableReinitialize onSubmit={editCrates}>
                         <Form>
                             <div className="row">
-                                <div className="col-md-6">
+                                <div className="col-md-12">
                                     <div className="form-group">
                                         <label>Crate Name</label>
                                         <Field type="text" className="form-control" name="name" placeholder="Enter Crate Name" />
@@ -247,7 +274,7 @@ const EditCactusCrates = () => {
                                     </div>
                                 </div>
 
-                                <div className="col-md-6">
+                                {/* <div className="col-md-6">
                                     <div className="form-group">
                                         <label>Crate amount</label>
                                         <Field type="text" className="form-control" name="amount" placeholder="Enter Crate Amount" />
@@ -278,7 +305,7 @@ const EditCactusCrates = () => {
                                         <Field type="text" className="form-control" name="usabe_no" placeholder="Number of Usable" />
                                         <ErrorMessage name="usabe_no" component="div" className="alert alert-danger" />
                                     </div>
-                                </div>
+                                </div> */}
 
                                 {/* <div className="col-md-6">
                                     <div className="form-group">
@@ -313,19 +340,19 @@ const EditCactusCrates = () => {
 
                                             <div className="col-md-4">
                                                 <div className="form-group">
-                                                    <label>Stock/Share Quantity</label>
-                                                    <input required type="number" onChange={(e) => handleChangeQuantity(e, index)} className="form-control" name="stockquantity" placeholder='Quantity' value={ele.quantity} />
+                                                    <label>Stock/Share Probability <small className='text-danger' style={{fontWeight:"600"}}>(in %)</small></label>
+                                                    <input required type="number" onChange={(e) => handleChangeQuantity(e, index)} className="form-control" name="stockquantity" placeholder='Probability (in %)' value={ele.percentage} />
                                                 </div>
                                             </div>
 
                                             <div className="col-md-2">
-                                                {/* <div className='row mt-4'>
+                                                <div className='row mt-4'>
                                                     {
-                                                        (ele.quantity !== "" && ele.quantity !== undefined && ele.stock !== "" && ele.stock !== undefined) && (
-                                                            parseFloat(ele.quantity).toFixed(1) + ' X ' + parseFloat(curEle.price).toFixed(1) + ' = ' + parseFloat(curEle.price * curEle.quantity).toFixed(2)
+                                                        (ele.percentage !== "" && ele.percentage !== undefined) && (
+                                                            parseFloat(ele.percentage/100).toFixed(2) + ' X ' + parseFloat(ele.price_per_crate).toFixed(2) + ' = ' + parseFloat(ele.price_per_crate * (ele.percentage/100)).toFixed(2)
                                                         )
                                                     }
-                                                </div> */}
+                                                </div>
                                             </div>
 
                                             <div className="col-md-1 mt-4">
@@ -341,6 +368,14 @@ const EditCactusCrates = () => {
                                         </div>
                                     )
                                 })
+                            }
+
+                            {
+                                perError ? (
+                                    <div className="alert alert-danger">
+                                        Probability cannot be greater or less than 100%
+                                    </div>
+                                ) : null
                             }
 
                             <div className="col-md-3">
@@ -359,6 +394,12 @@ const EditCactusCrates = () => {
                                             <option value="2">Inactive</option>
                                         </Field>
                                         <ErrorMessage name="status" component="div" className="alert alert-danger" />
+                                    </div>
+                                    <div>
+                                        <b>Expected value : </b><b><span className="text-success">{getTotal() ?? 0}</span></b>
+                                    </div>
+                                    <div>
+                                        <b>Total crate amount : </b><b><span className="text-success">{parseFloat(getTotal()/0.8).toFixed(2) ?? 0}</span></b>
                                     </div>
                                 </div>
 
@@ -380,6 +421,14 @@ const EditCactusCrates = () => {
                                     </div>
 
                                 </div>
+
+                                {
+                                    error ? (
+                                        <div className="alert alert-danger">
+                                            API limit reached price not available
+                                        </div>
+                                    ) : null
+                                }
 
                                 <div className="col-md-12">
                                     <div className="form-group">
@@ -421,13 +470,13 @@ const EditCactusCrates = () => {
             </Modal>
 
 
-            <Modal isOpen={add.status} toggle={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]); }} className="njmep-modal">
+            <Modal isOpen={add.status} toggle={() => { setAdd({ status: false }); setNewCount([{ stock: "", percentage: null, price: 0, symbol: "", name: "" }]); }} className="njmep-modal">
                 <div className="modal-content">
                     <ModalBody className='modal-body'>
                         <div className="deletenews-form-info">
                             <button
                                 type="button"
-                                onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]); }}
+                                onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", percentage: null, price: 0, symbol: "", name: "" }]); }}
                                 className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
@@ -455,26 +504,23 @@ const EditCactusCrates = () => {
                                             </div>
                                             <div className="col-md-12">
                                                 <div className="form-group">
-                                                    <label>Stock/Share Quantity</label>
-                                                    <input required type="number" onChange={(e) => handleNewChangeQuantity(e)} className="form-control" name="quantity" placeholder='Quantity' value={newCount.quantity} />
+                                                    <label>Stock/Share Probability <small className='text-danger' style={{fontWeight:"600"}}>(in %)</small></label>
+                                                    <input required type="number" onChange={(e) => handleNewChangeQuantity(e)} className="form-control" name="quantity" placeholder='Quantity' value={newCount.percentage} />
                                                 </div>
                                             </div>
                                             <div className='col-md-12 my-3'>
                                                 {
-                                                    (newCount[0].quantity && newCount[0].stock) ?
+                                                    (newCount[0].percentage && newCount[0].stock) ?
                                                         (
-                                                            parseFloat(newCount[0].quantity).toFixed(1) + ' X ' + parseFloat(newCount[0].price).toFixed(1) + ' = ' + parseFloat(newCount[0].quantity * newCount[0].price).toFixed(2)
+                                                            parseFloat(newCount[0].percentage/100).toFixed(1) + ' X ' + parseFloat(newCount[0].price).toFixed(1) + ' = ' + parseFloat((newCount[0].percentage/100) * newCount[0].price).toFixed(2)
                                                         )
                                                         :
                                                         null
                                                 }
                                             </div>
-                                            <div className='mb-3'>
-                                                <b>Total : </b><b><span className="text-success">{getTotal() ?? 0}</span></b>
-                                            </div>
                                             <div className="col-md-12">
                                                 <div className="form-group">
-                                                    <button onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]); }} type="button" className="Cancel-btn">Cancel</button>
+                                                    <button onClick={() => { setAdd({ status: false }); setNewCount([{ stock: "", percentage: null, price: 0, symbol: "", name: "" }]); }} type="button" className="Cancel-btn">Cancel</button>
                                                     <button type="submit" className="Create-btn mx-2">Add</button>
                                                 </div>
                                             </div>

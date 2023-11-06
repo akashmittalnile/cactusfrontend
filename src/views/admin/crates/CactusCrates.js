@@ -16,7 +16,7 @@ import { Modal, ModalBody } from "reactstrap";
 import { toast } from 'react-hot-toast';
 import nodata from "../../../assets/images/admin/no_data.png";
 
-const LIMIT = 4;
+const LIMIT = 12;
 
 
 const CactusCrates = () => {
@@ -100,7 +100,7 @@ const CactusCrates = () => {
                                                         <h4 className='text-capitalize'>{ele.name ?? "NA"}</h4>
                                                         <div className="cactuscrates-price">${parseFloat(ele.amount ?? 0).toFixed(2)}</div>
                                                         <div className="cactuscrates-action">
-                                                            <Link to={`/cactus-crates-list/${encode(ele.id)}`}>View</Link>
+                                                            <Link to={`/view-cactus-crates/${encode(ele.id)}`}>View</Link>
                                                             <Link to={`/cactus-crates-edit/${encode(ele.id)}`}>Edit</Link>
                                                             <Link to="" onClick={() => setTrash({ status: true, id: ele.id })}>Delete</Link>
                                                         </div>

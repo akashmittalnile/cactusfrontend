@@ -98,9 +98,9 @@ const TransactionStatement = () => {
                                                     return (
                                                         <tr key={indx}>
                                                             <td>{(pageNum === 1) ? (indx + 1) : (indx + 1 + (LIMIT * (pageNum - 1)))}</td>
-                                                            <td className='text-capitalize'>{ele.first_name ?? "NA"} {ele.last_name ?? ""}</td>
-                                                            <td>{parseFloat(ele.balance).toFixed(2) ?? 0}</td>
-                                                            <td>{ele.club_name ?? "NA"}</td>
+                                                            <td className='text-capitalize'>{(ele.mc_first_name !== '' && ele.mc_first_name!==null) ? ele.mc_first_name : "NA"} {(ele.mc_last_name !== '' && ele.mc_last_name!==null) ? ele.mc_last_name : ""}</td>
+                                                            <td>${parseFloat(ele.balance).toFixed(2) ?? 0}</td>
+                                                            <td>{(ele.cb_name !== '' && ele.cb_name!==null) ? ele.cb_name : "NA"}</td>
                                                             <td>{transactionType(ele.type)}</td>
                                                             <td>{ele.comment ?? "NA"}</td>
                                                         </tr>

@@ -11,7 +11,7 @@ import ApprovedManager from "../views/admin/manager/ApprovedManager";
 import ClubDetails from "../views/admin/club/ClubDetails";
 import Proposal from "../views/admin/club/Proposal";
 import TradeHistory from "../views/admin/club/TradeHistory";
-import CactusCrateList from "../views/admin/crates/CactusCrateList";
+import ViewCactusCrate from "../views/admin/crates/ViewCactusCrate";
 import CreateCactusCrates from "../views/admin/crates/CreateCactusCrates";
 import EditCrates from "../views/admin/crates/EditCrates";
 import EditCactusCrates from "../views/admin/crates/EditCactusCrates";
@@ -125,9 +125,9 @@ var AdminRoutes = [
         component: CactusCrates
     },
     {
-        path: "/cactus-crates-list/:id",
+        path: "/view-cactus-crates/:id",
         layout: AdminLayout,
-        component: CactusCrateList
+        component: ViewCactusCrate
     },
     {
         path: "/edit-crates",

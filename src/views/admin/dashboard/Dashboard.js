@@ -178,7 +178,7 @@ const Dashboard = () => {
                     <div className="col-md-3">
                         <div className="overview-item re-overview">
                             <div className="overview-item-content">
-                                <Link to="/manager">
+                                <Link to="/users">
                                     <div className="overview-overlay-media">
                                         <img src={manage} alt="not-found" />
                                     </div>

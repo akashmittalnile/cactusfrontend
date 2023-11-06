@@ -11,7 +11,7 @@ import ApiService from '../../../core/services/ApiService';
 import Loader from '../../common/Loader';
 import nodata from "../../../assets/images/admin/no_data.png";
 
-const CactusCrateList = () => {
+const ViewCactusCrate = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -32,6 +32,7 @@ const CactusCrateList = () => {
     const getStockList = async (api) => {
         setLoading(true);
         const response = await ApiService.getAPIWithAccessToken(api);
+        console.log(response.data.body);
         if (response.data.headers.success === 1) {
             setStockList(response.data.body);
         } else setStockList([]);
@@ -110,11 +111,11 @@ const CactusCrateList = () => {
                                                             <div key={indx} className="col-md-6">
                                                                 <div className="createcrate-profile-item">
                                                                     {/* <div className="createcrate-profile-icon">
-                                                            <img src={down} alt="not-found" />
-                                                        </div> */}
+                                                                        <img src={down} alt="not-found" />
+                                                                    </div> */}
                                                                     <div className="createcrate-profile-text">
                                                                         <h3>{ele.c_name ?? ""}, {ele.share_id ?? "NA"}</h3>
-                                                                        <h3 className='text-capitalize mb-0 mt-2' style={{ color: "#00ee57" }}>Quantity : {ele.quantity ?? 0}</h3>
+                                                                        <h3 className='text-capitalize mb-0 mt-2' style={{ color: "#00ee57" }}>Probability : {ele.percentage ?? 0}%</h3>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -180,4 +181,4 @@ const CactusCrateList = () => {
     )
 }
 
-export default CactusCrateList
+export default ViewCactusCrate

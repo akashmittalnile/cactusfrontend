@@ -16,10 +16,12 @@ const CreateCactusCrates = () => {
     const navigate = useNavigate();
     const [stockList, setStockList] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [count, setCount] = useState([{ stock: "", quantity: null, price: 0, symbol: "", name: "" }]);
+    const [count, setCount] = useState([{ stock: "", percentage: null, price: 0, symbol: "", name: "" }]);
     const [image, setImage] = useState(up);
     const [imgError, setImgError] = useState(false);
+    const [perError, setPerError] = useState(false);
     const [file, setFile] = useState();
+    const [error, setError] = useState(false);
 
     const getStockList = async (api) => {
         setLoading(true);
@@ -58,10 +60,6 @@ const CreateCactusCrates = () => {
 
     const validateSchema = Yup.object().shape({
         name: Yup.string().required(`Crate name is required`),
-        amount: Yup.number().typeError('Crate amount must be digit').required(`Crate amount is required`),
-        start_date: Yup.date().required("Start date is required"),
-        end_date: Yup.date().required("End date is required"),
-        usabe_no: Yup.number().typeError('Number of Usable must be digit').required(`Number of Usable is required`),
         status: Yup.string().required(`Status is required`)
     });
 
@@ -70,25 +68,39 @@ const CreateCactusCrates = () => {
             setImgError(true);
             return;
         } else setImgError(false);
+        if(getTotalPercentage() != 100){
+            setPerError(true);
+            return;
+        }
+        else setPerError(false);
+        if(getTotal() == 0.00){
+            setError(true);
+            return;
+        }
+        else setError(false);
         setLoading(true);
         // console.log("Create crate form data => ", formValue);
         let form = new FormData();
         form.append("name", formValue.name);
-        form.append("amount", formValue.amount);
-        form.append("start_date", formValue.start_date);
-        form.append("end_date", formValue.end_date);
-        form.append("usabe_no", formValue.usabe_no);
+        form.append("amount", null);
+        form.append("start_date", null);
+        form.append("end_date", null);
+        form.append("usabe_no", null);
         form.append("status", formValue.status);
         form.append("file", file);
         count.forEach((ele, index) => {
             form.append(`club_share[${index}][share_id]`, ele.symbol);
-            form.append(`club_share[${index}][quantity]`, ele.quantity);
+            form.append(`club_share[${index}][quantity]`, 1);
+            form.append(`club_share[${index}][percentage]`, ele.percentage);
             form.append(`club_share[${index}][name]`, ele.name);
         });
         const response = await ApiService.postAPIWithAccessTokenMultiPart(api.CreateCrate, form);
         if (response.data.headers.success === 1) {
             toast.success('New crate added successfully!');
             navigate('/cactus-crates');
+        }
+        for (let [key, value] of form) {
+            console.log(`${key}: ${value}`)
         }
         setLoading(false);
     }
@@ -102,7 +114,7 @@ const CreateCactusCrates = () => {
     }
 
     const addStockInput = () => {
-        setCount([...count, { stock: "", quantity: null, price: 0, symbol: "", name: "" }]);
+        setCount([...count, { stock: "", percentage: null, price: 0, symbol: "", name: "" }]);
     }
 
     const removeStockInput = (index) => {
@@ -134,13 +146,19 @@ const CreateCactusCrates = () => {
     const handleChangeQuantity = (e, index) => {
         const { value } = e.target;
         const list = [...count];
-        list[index]['quantity'] = value;
+        list[index]['percentage'] = value;
         setCount(list);
     }
 
     const getTotal = () => {
-        let total = count.reduce((n, { quantity, price }) => parseFloat(n) + (parseFloat((quantity === "" || !quantity) ? 0 : quantity) * parseFloat(price ?? 0)), 0);
+        let total = count.reduce((n, { percentage, price }) => parseFloat(n) + ((parseFloat((percentage === "" || !percentage) ? 0 : percentage/100)) * parseFloat(price ?? 0)), 0);
         // console.log(total);
+        if(total === "" || total === 0 || total === null || total === undefined) return 0;
+        return parseFloat(total ?? 0).toFixed(2);
+    }
+
+    const getTotalPercentage = () => {
+        let total = count.reduce((n, { percentage, price }) => parseFloat(n) + parseFloat((percentage === "" || !percentage) ? 0 : percentage), 0);
         if(total === "" || total === 0 || total === null || total === undefined) return 0;
         return parseFloat(total ?? 0).toFixed(2);
     }
@@ -165,7 +183,7 @@ const CreateCactusCrates = () => {
                     <Formik initialValues={initialValue} validateOnChange={true} validationSchema={validateSchema} onSubmit={addCrates}>
                         <Form>
                             <div className="row">
-                                <div className="col-md-6">
+                                <div className="col-md-12">
                                     <div className="form-group">
                                         <label>Crate Name</label>
                                         <Field type="text" className="form-control" name="name" placeholder="Enter Crate Name" />
@@ -173,7 +191,7 @@ const CreateCactusCrates = () => {
                                     </div>
                                 </div>
 
-                                <div className="col-md-6">
+                                {/* <div className="col-md-6">
                                     <div className="form-group">
                                         <label>Crate amount</label>
                                         <Field type="text" className="form-control" name="amount" placeholder="Enter Crate Amount" />
@@ -204,7 +222,7 @@ const CreateCactusCrates = () => {
                                         <Field type="text" className="form-control" name="usabe_no" placeholder="Number of Usable" />
                                         <ErrorMessage name="usabe_no" component="div" className="alert alert-danger" />
                                     </div>
-                                </div>
+                                </div> */}
 
                                 {/* <div className="col-md-6">
                                     <div className="form-group">
@@ -237,16 +255,16 @@ const CreateCactusCrates = () => {
 
                                             <div className="col-md-3">
                                                 <div className="form-group">
-                                                    <label>Stock/Share Quantity</label>
-                                                    <input required type="number" onChange={(e) => handleChangeQuantity(e, index)} className="form-control" name="stockquantity" placeholder='Quantity' value={curEle.quantity} />
+                                                    <label>Stock/Share Probability <small className='text-danger' style={{fontWeight:"600"}}>(in %)</small></label>
+                                                    <input required type="number" min="0.1" max="100" step="0.1" onChange={(e) => handleChangeQuantity(e, index)} className="form-control" name="stockquantity" placeholder='Probability (in %)' value={curEle.percentage} />
                                                 </div>
                                             </div>
 
                                             <div className="col-md-2">
                                                 <div className='row mt-4'>
                                                     {
-                                                        (curEle.quantity !== "" && curEle.quantity && curEle.quantity !== undefined && curEle.stock !== "" && curEle.stock !== undefined) && (
-                                                            parseFloat(curEle.quantity).toFixed(1) + ' X ' + parseFloat(curEle.price).toFixed(1) + ' = ' + parseFloat(curEle.price * curEle.quantity).toFixed(2)
+                                                        (curEle.percentage !== "" && curEle.percentage && curEle.percentage !== undefined && curEle.stock !== "" && curEle.stock !== undefined) && (
+                                                            parseFloat(curEle.percentage/100).toFixed(2) + ' X ' + parseFloat(curEle.price).toFixed(2) + ' = ' + parseFloat(curEle.price * (curEle.percentage/100)).toFixed(2)
                                                         )
                                                     }
 
@@ -276,6 +294,14 @@ const CreateCactusCrates = () => {
                                 })
                             }
 
+                            {
+                                perError ? (
+                                    <div className="alert alert-danger">
+                                        Probability cannot be greater or less than 100%
+                                    </div>
+                                ) : null
+                            }
+
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="form-group">
@@ -288,7 +314,10 @@ const CreateCactusCrates = () => {
                                         <ErrorMessage name="status" component="div" className="alert alert-danger" />
                                     </div>
                                     <div>
-                                        <b>Total : </b><b><span className="text-success">{getTotal() ?? 0}</span></b>
+                                        <b>Expected value : </b><b><span className="text-success">{getTotal() ?? 0}</span></b>
+                                    </div>
+                                    <div>
+                                        <b>Total crate amount : </b><b><span className="text-success">{parseFloat(getTotal()/0.8).toFixed(2) ?? 0}</span></b>
                                     </div>
                                 </div>
 
@@ -314,6 +343,14 @@ const CreateCactusCrates = () => {
                                     </div>
 
                                 </div>
+
+                                {
+                                    error ? (
+                                        <div className="alert alert-danger">
+                                            API limit reached price not available
+                                        </div>
+                                    ) : null
+                                }
 
                                 <div className="col-md-12">
                                     <div className="form-group">
